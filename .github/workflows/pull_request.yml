@@ -34,7 +34,7 @@ jobs:
   build-base:
     name: Build base ottr image
     needs: dockerfiles-changed
-    if: ${{needs.files-changed.outputs.base_ottr-changed == 'true'}}
+    if: ${{needs.dockerfiles-changed.outputs.base_ottr-changed == 'true'}}
     uses: ./.github/workflows/docker-test.yml
     with:
       directory: base_ottr
@@ -45,7 +45,7 @@ jobs:
   build-ottrpal:
     name: Build ottrpal image
     needs: dockerfiles-changed
-    if: ${{needs.files-changed.outputs.ottrpal-changed == 'true'}}
+    if: ${{needs.dockerfiles-changed.outputs.ottrpal-changed == 'true'}}
     uses: ./.github/workflows/docker-test.yml
     with:
       directory: ottrpal
@@ -56,7 +56,7 @@ jobs:
   build-bioconductor:
     name: Build bioconductor image
     needs: dockerfiles-changed
-    if: ${{needs.files-changed.outputs.bioconductor-changed == 'true'}}
+    if: ${{needs.dockerfiles-changed.outputs.bioconductor-changed == 'true'}}
     uses: ./.github/workflows/docker-test.yml
     with:
       directory: bioconductor
