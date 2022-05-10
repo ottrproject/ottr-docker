@@ -63,6 +63,6 @@ jobs:
         with:
           push: false
           load: true
-          context: docker
+          context: ${{ inputs.directory }}
           file: ${{ inputs.directory }}/Dockerfile
           tags: ${{ inputs.tag }}
