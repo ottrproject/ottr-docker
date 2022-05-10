@@ -30,14 +30,17 @@ jobs:
         run: |
           if [[ "$steps.folders_changed.outputs.all_changed_and_modified_files" == *"base_ottr"* ]]; then
             echo "::set-output name=base_ottr::true"
+            echo "base ottr changed"
           fi
 
           if [[ "$steps.folders_changed.outputs.all_changed_and_modified_files" == *"ottrpal"* ]]; then
             echo "::set-output name=ottrpal::true"
+            echo "ottrpal changed"
           fi
 
           if [[ "$steps.folders_changed.outputs.all_changed_and_modified_files" == *"bioconductor"* ]]; then
             echo "::set-output name=bioconductor::true"
+            echo "bioconductor changed"
           fi
 
     outputs:
