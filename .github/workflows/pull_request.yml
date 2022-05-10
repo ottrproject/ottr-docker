@@ -19,17 +19,17 @@ jobs:
 
       - name: Files changed?
         uses: tj-actions/verify-changed-files@v8.8
-        id: files_changed
+        id: folders_changed
         with:
           files: |
-            base_ottr
-            ottrpal
-            bioconductor
+            base_ottr/*
+            ottrpal/*
+            bioconductor/*
 
     outputs:
-      base_ottr-changed: contains(steps.dockerfiles-changed.outputs.files_changed, 'base_ottr')
-      ottrpal-changed: contains(steps.dockerfiles-changed.outputs.files_changed, 'ottrpal')
-      bioconductor-changed: contains(steps.dockerfiles-changed.outputs.files_changed, 'bioconductor')
+      base_ottr-changed: contains(steps.dockerfiles-changed.outputs.folders_changed, 'base_ottr')
+      ottrpal-changed: contains(steps.dockerfiles-changed.outputs.folders_changed, 'ottrpal')
+      bioconductor-changed: contains(steps.dockerfiles-changed.outputs.folders_changed, 'bioconductor')
 
   build-base:
     name: Build base ottr image
