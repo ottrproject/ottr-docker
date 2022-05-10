@@ -18,22 +18,32 @@ jobs:
           fetch-depth: 0
 
       - name: Get specific changed files
-        id: folders_changed
         uses: tj-actions/changed-files@v14.5
         with:
-          files: |
-            base_ottr/*
-            ottrpal/*
-            bioconductor/*
+          path: |
+            base_ottr
+            ottrpal
+            bioconductor
 
-      - run: |
-          echo ${{ steps.folders_changed.outputs.all_changed_and_modified_files }}
-          echo ${{ contains(steps.folders_changed.outputs.all_changed_and_modified_files, 'bioconductor/*') }}
+      - name:
+        id: folders_changed
+        run: |
+          if [[ "$steps.folders_changed.outputs.all_changed_and_modified_files" == *"base_ottr"* ]]; then
+            echo "::set-output name=base_ottr::true"
+          fi
+
+          if [[ "$steps.folders_changed.outputs.all_changed_and_modified_files" == *"ottrpal"* ]]; then
+            echo "::set-output name=ottrpal::true"
+          fi
+
+          if [[ "$steps.folders_changed.outputs.all_changed_and_modified_files" == *"bioconductor"* ]]; then
+            echo "::set-output name=bioconductor::true"
+          fi
 
     outputs:
-      base_ottr-changed: startsWith(steps.folders_changed.outputs.all_changed_and_modified_files, 'base_ottr')
-      ottrpal-changed: startsWith(steps.folders_changed.outputs.all_changed_and_modified_files, 'ottrpal')
-      bioconductor-changed: startsWith(steps.folders_changed.outputs.all_changed_and_modified_files, 'bioconductor')
+      base_ottr-changed: steps.folders_changed.outputs.base_ottr
+      ottrpal-changed: steps.folders_changed.outputs.ottrpal
+      bioconductor-changed: steps.folders_changed.outputs.bioconductor
 
   build-base:
     name: Build base ottr image
