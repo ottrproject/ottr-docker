@@ -20,6 +20,11 @@ jobs:
       - name: Files changed?
         uses: tj-actions/verify-changed-files@v8.8
         id: files_changed
+        with:
+          files: |
+            base_ottr
+            ottrpal
+            bioconductor
 
     outputs:
       base_ottr-changed: contains(steps.dockerfiles-changed.outputs.files_changed, 'base_ottr')
