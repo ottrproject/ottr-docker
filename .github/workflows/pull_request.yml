@@ -31,15 +31,23 @@ jobs:
         uses: tj-actions/verify-changed-files@v8.8
         id: ottrpal-changed
         with:
-          files: ottrpal/Dockerfile
+          files: ottrpal/*
+
+      - name: Bioconductor image changed?
+        uses: tj-actions/verify-changed-files@v8.8
+        id: bioconductor-changed
+        with:
+          files: ottrpal/*
 
     outputs:
-      base_change: steps.verify-changed-files.outputs.base_ottr-changed
-      ottrpal_change: steps.verify-changed-files.outputs.ottrpal-changed
+      base_change: steps.files-changed.outputs.base_ottr-changed
+      ottrpal_change: steps.files-changed.outputs.ottrpal-changed
+      bioconductor_change: steps.files-changed.outputs.bioconductor-changed
 
   build-base:
     name: Build base ottr image
     needs: files-changed
+    if: ${{needs.files-changed.outputs.base_ottr-changed == 'true'}}
     uses: ./.github/workflows/docker-test.yml
     with:
       directory: base_ottr
@@ -50,9 +58,21 @@ jobs:
   build-ottrpal:
     name: Build ottrpal image
     needs: files-changed
+    if: ${{needs.files-changed.outputs.ottrpal-changed == 'true'}}
     uses: ./.github/workflows/docker-test.yml
     with:
       directory: ottrpal
       tag: jhudsl/ottrpal
+    secrets:
+      GH_PAT: ${{ secrets.GH_PAT }}
+
+  build-bioconductor:
+    name: Build bioconductor image
+    needs: files-changed
+    if: ${{needs.files-changed.outputs.bioconductor-changed == 'true'}}
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      directory: bioconductor
+      tag: jhudsl/ottr_bioconductor
     secrets:
       GH_PAT: ${{ secrets.GH_PAT }}
