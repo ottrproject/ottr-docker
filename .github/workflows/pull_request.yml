@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  files-changed:
+  dockerfiles-changed:
     name: Detect changed Dockerfiles
     runs-on: ubuntu-latest
     steps:
@@ -17,32 +17,14 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Base ottr changed?
+      - name: Files changed?
         uses: tj-actions/verify-changed-files@v8.8
-        id: base_ottr-changed
-        with:
-          files: |
-             base_ottr/Dockerfile
-             base_ottr/github_package_list.tsv
-
-      - name: Base ottr changed?
-        uses: tj-actions/verify-changed-files@v8.8
-        id: ottrpal-changed
-        with:
-          files: ottrpal/Dockerfile
-
-      - name: Bioconductor image changed?
-        uses: tj-actions/verify-changed-files@v8.8
-        id: bioconductor-changed
-        with:
-          files: |
-            bioconductor/Dockerfile
-            bioconductor/github_package_list.tsv
+        id: files_changed
 
     outputs:
-      base_ottr-changed: steps.base_ottr-changed.outputs.changed_files
-      ottrpal-changed: steps.ottrpal-changed.outputs.changed_files
-      bioconductor-changed: steps.bioconductor-changed.outputs.changed_files
+      base_ottr-changed: contains(steps.dockerfiles-changed.outputs.files_changed, 'base_ottr')
+      ottrpal-changed: contains(steps.dockerfiles-changed.outputs.files_changed, 'ottrpal')
+      bioconductor-changed: contains(steps.dockerfiles-changed.outputs.files_changed, 'bioconductor')
 
   build-base:
     name: Build base ottr image
