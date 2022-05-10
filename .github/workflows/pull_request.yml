@@ -6,8 +6,6 @@ on:
   pull_request:
     branches: [ main, staging ]
 
-
-
 jobs:
 
   files-changed:
@@ -37,12 +35,14 @@ jobs:
         uses: tj-actions/verify-changed-files@v8.8
         id: bioconductor-changed
         with:
-          files: bioconductor/Dockerfile
+          files: |
+            bioconductor/Dockerfile
+            bioconductor/github_package_list.tsv
 
     outputs:
-      base_ottr-changed: steps.files-changed.outputs.base_ottr-changed
-      ottrpal-changed: steps.files-changed.outputs.ottrpal-changed
-      bioconductor-changed: steps.files-changed.outputs.bioconductor-changed
+      base_ottr-changed: steps.base_ottr-changed.outputs.changed_files
+      ottrpal-changed: steps.ottrpal-changed.outputs.changed_files
+      bioconductor-changed: steps.bioconductor-changed.outputs.changed_files
 
   build-base:
     name: Build base ottr image
