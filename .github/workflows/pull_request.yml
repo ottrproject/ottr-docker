@@ -28,7 +28,8 @@ jobs:
 
       - run: |
           echo ${{ steps.folders_changed.outputs.all_changed_and_modified_files }}
-          echo ${{startsWith(steps.folders_changed.outputs.all_changed_and_modified_files, 'base_ottr')}}
+          echo ${{ contains(steps.folders_changed.outputs.all_changed_and_modified_files, 'bioconductor/*') }}
+
     outputs:
       base_ottr-changed: startsWith(steps.folders_changed.outputs.all_changed_and_modified_files, 'base_ottr')
       ottrpal-changed: startsWith(steps.folders_changed.outputs.all_changed_and_modified_files, 'ottrpal')
