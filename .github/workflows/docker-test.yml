@@ -24,6 +24,26 @@ on:
         required: false
       DOCKERHUB_TOKEN:
         required: false
+  workflow_dispatch:
+    inputs:
+      directory:
+        required: true
+        type: string
+      tag:
+        required: true
+        type: string
+      dockerhubpush:
+        description: 'Push to Dockerhub?'
+        required: false
+        default: 'false'
+        type: string
+    secrets:
+      GH_PAT:
+        required: true
+      DOCKERHUB_USERNAME:
+        required: false
+      DOCKERHUB_TOKEN:
+        required: false
 
 jobs:
 
