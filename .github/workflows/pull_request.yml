@@ -20,33 +20,15 @@ jobs:
       - name: Get specific changed files
         uses: tj-actions/changed-files@v14.5
         with:
-          files: |
+          path: |
             base_ottr
             ottrpal
             bioconductor
 
-      - name:
-        id: folders_changed
-        run: |
-          if [[ "$steps.folders_changed.outputs.all_changed_and_modified_files" == *"base_ottr"* ]]; then
-            echo "::set-output name=base_ottr::true"
-            echo "base ottr changed"
-          fi
-
-          if [[ "$steps.folders_changed.outputs.all_changed_and_modified_files" == *"ottrpal"* ]]; then
-            echo "::set-output name=ottrpal::true"
-            echo "ottrpal changed"
-          fi
-
-          if [[ "$steps.folders_changed.outputs.all_changed_and_modified_files" == *"bioconductor"* ]]; then
-            echo "::set-output name=bioconductor::true"
-            echo "bioconductor changed"
-          fi
-
     outputs:
-      base_ottr-changed: steps.folders_changed.outputs.base_ottr
-      ottrpal-changed: steps.folders_changed.outputs.ottrpal
-      bioconductor-changed: steps.folders_changed.outputs.bioconductor
+      base_ottr-changed: contains(steps.folders_changed.outputs.all_changed_and_modified_files, 'base_ottr')
+      ottrpal-changed: contains(steps.folders_changed.outputs.all_changed_and_modified_files, 'ottrpal')
+      bioconductor-changed: contains(steps.folders_changed.outputs.all_changed_and_modified_files, 'bioconductor')
 
   build-base:
     name: Build base ottr image
