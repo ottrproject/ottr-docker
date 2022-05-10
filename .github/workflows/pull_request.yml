@@ -27,9 +27,9 @@ jobs:
             bioconductor/*
 
     outputs:
-      base_ottr-changed: contains(steps.dockerfiles-changed.outputs.all_changed_and_modified_files, 'base_ottr')
-      ottrpal-changed: contains(steps.dockerfiles-changed.outputs.all_changed_and_modified_files, 'ottrpal')
-      bioconductor-changed: contains(steps.dockerfiles-changed.outputs.all_changed_and_modified_files, 'bioconductor')
+      base_ottr-changed: startsWith(steps.dockerfiles-changed.outputs.all_changed_and_modified_files, 'base_ottr')
+      ottrpal-changed: startsWith(steps.dockerfiles-changed.outputs.all_changed_and_modified_files, 'ottrpal')
+      bioconductor-changed: startsWith(steps.dockerfiles-changed.outputs.all_changed_and_modified_files, 'bioconductor')
 
   build-base:
     name: Build base ottr image
