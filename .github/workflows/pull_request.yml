@@ -9,7 +9,7 @@ on:
 jobs:
 
   build-base:
-    uses: ./.github/workflows/docker-test.yml@main
+    uses: ./.github/workflows/docker-test.yml
     with:
       directory: base_ottr
       tag: jhudsl/course_template
@@ -17,7 +17,7 @@ jobs:
       GH_PAT: ${{ secrets.GH_PAT }}
 
   build-ottrpal:
-    uses: ./.github/workflows/docker-test.yml@main
+    uses: ./.github/workflows/docker-test.yml
     with:
       directory: ottrpal
       tag: jhudsl/ottrpal
