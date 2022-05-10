@@ -35,8 +35,8 @@ jobs:
         uses: tj-actions/verify-changed-files@v8.8
         id: bioconductor-changed
         with:
-          files: ottrpal/*
-          
+          files: bioconductor/*
+
     outputs:
       base_change: steps.verify-changed-files.outputs.base_ottr-changed
       ottrpal_change: steps.verify-changed-files.outputs.ottrpal-changed
