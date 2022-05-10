@@ -17,9 +17,9 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Files changed?
-        uses: tj-actions/verify-changed-files@v8.8
+      - name: Get specific changed files
         id: folders_changed
+        uses: tj-actions/changed-files@v14.5
         with:
           files: |
             base_ottr/*
