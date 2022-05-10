@@ -31,18 +31,18 @@ jobs:
         uses: tj-actions/verify-changed-files@v8.8
         id: ottrpal-changed
         with:
-          files: ottrpal/*
+          files: ottrpal/Dockerfile
 
       - name: Bioconductor image changed?
         uses: tj-actions/verify-changed-files@v8.8
         id: bioconductor-changed
         with:
-          files: bioconductor/*
+          files: bioconductor/Dockerfile
 
     outputs:
-      base_change: steps.files-changed.outputs.base_ottr-changed
-      ottrpal_change: steps.files-changed.outputs.ottrpal-changed
-      bioconductor_change: steps.files-changed.outputs.bioconductor-changed
+      base_ottr-changed: steps.files-changed.outputs.base_ottr-changed
+      ottrpal-changed: steps.files-changed.outputs.ottrpal-changed
+      bioconductor-changed: steps.files-changed.outputs.bioconductor-changed
 
   build-base:
     name: Build base ottr image
