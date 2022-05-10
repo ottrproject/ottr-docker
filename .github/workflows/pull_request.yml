@@ -27,12 +27,12 @@ jobs:
             bioconductor/*
 
       - run: |
-          echo ${{steps.dockerfiles-changed.outputs.all_changed_and_modified_files}}
-          echo ${{startsWith(steps.dockerfiles-changed.outputs.all_changed_and_modified_files, 'base_ottr')}}
+          echo ${{ steps.folders_changed.outputs.all_changed_and_modified_files }}
+          echo ${{startsWith(steps.folders_changed.outputs.all_changed_and_modified_files, 'base_ottr')}}
     outputs:
-      base_ottr-changed: startsWith(steps.dockerfiles-changed.outputs.all_changed_and_modified_files, 'base_ottr')
-      ottrpal-changed: startsWith(steps.dockerfiles-changed.outputs.all_changed_and_modified_files, 'ottrpal')
-      bioconductor-changed: startsWith(steps.dockerfiles-changed.outputs.all_changed_and_modified_files, 'bioconductor')
+      base_ottr-changed: startsWith(steps.folders_changed.outputs.all_changed_and_modified_files, 'base_ottr')
+      ottrpal-changed: startsWith(steps.folders_changed.outputs.all_changed_and_modified_files, 'ottrpal')
+      bioconductor-changed: startsWith(steps.folders_changed.outputs.all_changed_and_modified_files, 'bioconductor')
 
   build-base:
     name: Build base ottr image
