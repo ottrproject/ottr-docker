@@ -3,10 +3,8 @@
 name: Pull Request
 
 on:
-  pull_request:
-    branches: [ main, staging ]
-
-
+  push:
+    branches: [ main ]
 
 jobs:
 
@@ -36,7 +34,7 @@ jobs:
     outputs:
       base_change: steps.verify-changed-files.outputs.base_ottr-changed
       ottrpal_change: steps.verify-changed-files.outputs.ottrpal-changed
-
+      
   build-base:
     name: Build base ottr image
     needs: files-changed
@@ -44,8 +42,11 @@ jobs:
     with:
       directory: base_ottr
       tag: jhudsl/course_template
+      dockerhubpush: true
     secrets:
       GH_PAT: ${{ secrets.GH_PAT }}
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
   build-ottrpal:
     name: Build ottrpal image
@@ -54,5 +55,8 @@ jobs:
     with:
       directory: ottrpal
       tag: jhudsl/ottrpal
+      dockerhubpush: true
     secrets:
       GH_PAT: ${{ secrets.GH_PAT }}
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
