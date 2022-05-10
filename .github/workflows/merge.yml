@@ -1,0 +1,31 @@
+# Candace Savonen May 2022
+
+name: Pull Request
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+
+  build-base:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      directory: base_ottr
+      tag: jhudsl/course_template
+      dockerhubpush: true
+    secrets:
+      GH_PAT: ${{ secrets.GH_PAT }}
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  build-ottrpal:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      directory: ottrpal
+      tag: jhudsl/ottrpal
+      dockerhubpush: true
+    secrets:
+      GH_PAT: ${{ secrets.GH_PAT }}
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
