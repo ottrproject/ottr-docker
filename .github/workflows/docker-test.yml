@@ -16,6 +16,7 @@ on:
         description: 'Push to Dockerhub?'
         required: false
         default: 'false'
+        type: string
     secrets:
       GH_PAT:
         required: true
