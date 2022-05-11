@@ -107,6 +107,4 @@ jobs:
       # Push the Docker image if set to true from a manual trigger
       - name: Push Docker image if manual trigger set to true
         if: ${{ inputs.dockerhubpush != 'false' }}
-        run: |
-          docker tag jhudsl/course_template:latest jhudsl/course_template:$github.event.inputs.tag
-          docker push jhudsl/course_template:$github.event.inputs.tag
+        run: docker push ${{ inputs.tag }}
