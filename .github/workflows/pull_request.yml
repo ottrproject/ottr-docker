@@ -18,17 +18,27 @@ jobs:
           fetch-depth: 0
 
       - name: Get specific changed files
+        id: base_ottr
         uses: tj-actions/changed-files@v14.5
         with:
-          path: |
-            base_ottr
-            ottrpal
-            bioconductor
+          path: base_ottr
+
+      - name: Get specific changed files
+        id: ottrpal
+        uses: tj-actions/changed-files@v14.5
+        with:
+          path: ottrpal
+
+      - name: Get specific changed files
+        id: bioconductor
+        uses: tj-actions/changed-files@v14.5
+        with:
+          path: bioconductor
 
     outputs:
-      base_ottr-changed: contains(steps.folders_changed.outputs.all_changed_and_modified_files, 'base_ottr')
-      ottrpal-changed: contains(steps.folders_changed.outputs.all_changed_and_modified_files, 'ottrpal')
-      bioconductor-changed: contains(steps.folders_changed.outputs.all_changed_and_modified_files, 'bioconductor')
+      base_ottr-changed: steps.base_ottr.outputs.any_changed
+      ottrpal-changed: steps.ottrpal.outputs.any_changed
+      bioconductor-changed: steps.bioconductor.outputs.any_changed
 
   build-base:
     name: Build base ottr image
