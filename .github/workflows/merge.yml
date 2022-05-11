@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  files-changed:
+  dockerfiles-changed:
     name: Detect changed Dockerfiles
     runs-on: ubuntu-latest
     steps:
