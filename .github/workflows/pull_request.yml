@@ -36,14 +36,14 @@ jobs:
           files: bioconductor/*
 
       - run: |
-          echo ${{steps.base_ottr.outputs.only_changed}}
-          echo ${{steps.ottrpal.outputs.only_changed}}
-          echo ${{steps.bioconductor.outputs.only_changed}}
+          echo ${{steps.base_ottr.outputs.any_changed}}
+          echo ${{steps.ottrpal.outputs.any_changed}}
+          echo ${{steps.bioconductor.outputs.any_changed}}
 
     outputs:
-      base_ottr-changed: steps.base_ottr.outputs.only_changed
-      ottrpal-changed: steps.ottrpal.outputs.only_changed
-      bioconductor-changed: steps.bioconductor.outputs.only_changed
+      base_ottr-changed: steps.base_ottr.outputs.any_changed
+      ottrpal-changed: steps.ottrpal.outputs.any_changed
+      bioconductor-changed: steps.bioconductor.outputs.any_changed
 
   build-base:
     name: Build base ottr image
