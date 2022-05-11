@@ -44,7 +44,8 @@ jobs:
 
   build-base:
     name: Build base ottr image
-    needs: files-changed
+    needs: dockerfiles-changed
+    if: ${{needs.dockerfiles-changed.outputs.base_ottr_changed == 'true'}}
     uses: ./.github/workflows/docker-test.yml
     with:
       directory: base_ottr
@@ -57,7 +58,8 @@ jobs:
 
   build-ottrpal:
     name: Build ottrpal image
-    needs: files-changed
+    needs: dockerfiles-changed
+    if: ${{needs.dockerfiles-changed.outputs.ottrpal_changed == 'true'}}
     uses: ./.github/workflows/docker-test.yml
     with:
       directory: ottrpal
