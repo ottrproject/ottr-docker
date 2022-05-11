@@ -72,8 +72,8 @@ jobs:
 
   build-bioconductor:
     name: Build bioconductor image
-    needs: files-changed
-    if: ${{needs.files-changed.outputs.bioconductor-changed == 'true'}}
+    needs: dockerfiles-changed
+    if: ${{needs.dockerfiles-changed.outputs.bioconductor_changed == 'true'}}
     uses: ./.github/workflows/docker-test.yml
     with:
       directory: bioconductor
