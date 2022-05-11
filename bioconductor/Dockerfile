@@ -64,6 +64,3 @@ COPY github_package_list.tsv .
 RUN Rscript install_github.R \
   --packages github_package_list.tsv \
   --token git_token.txt
-
-# Set final workdir for commands
-WORKDIR /home/rstudio
