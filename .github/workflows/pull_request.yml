@@ -21,24 +21,24 @@ jobs:
         id: base_ottr
         uses: tj-actions/changed-files@v14.5
         with:
-          path: base_ottr
+          files: base_ottr/*
 
       - name: Get specific changed files
         id: ottrpal
         uses: tj-actions/changed-files@v14.5
         with:
-          path: ottrpal
+          files: ottrpal/*
 
       - name: Get specific changed files
         id: bioconductor
         uses: tj-actions/changed-files@v14.5
         with:
-          path: bioconductor
+          files: bioconductor/*
 
     outputs:
-      base_ottr-changed: steps.base_ottr.outputs.any_changed
-      ottrpal-changed: steps.ottrpal.outputs.any_changed
-      bioconductor-changed: steps.bioconductor.outputs.any_changed
+      base_ottr-changed: steps.base_ottr.outputs.only_changed
+      ottrpal-changed: steps.ottrpal.outputs.only_changed
+      bioconductor-changed: steps.bioconductor.outputs.only_changed
 
   build-base:
     name: Build base ottr image
