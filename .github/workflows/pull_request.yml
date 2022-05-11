@@ -35,6 +35,11 @@ jobs:
         with:
           files: bioconductor/*
 
+      - run: |
+          echo ${{steps.base_ottr.outputs.only_changed}}
+          echo ${{steps.ottrpal.outputs.only_changed}}
+          echo ${{steps.bioconductor.outputs.only_changed}}
+
     outputs:
       base_ottr-changed: steps.base_ottr.outputs.only_changed
       ottrpal-changed: steps.ottrpal.outputs.only_changed
