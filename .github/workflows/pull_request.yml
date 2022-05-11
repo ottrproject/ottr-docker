@@ -6,11 +6,9 @@ on:
   pull_request:
     branches: [ main, staging ]
 
-
-
 jobs:
 
-  files-changed:
+  dockerfiles-changed:
     name: Detect changed Dockerfiles
     runs-on: ubuntu-latest
     steps:
@@ -19,27 +17,38 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Base ottr changed?
-        uses: tj-actions/verify-changed-files@v8.8
-        id: base_ottr-changed
+      - name: Get specific changed files
+        id: base_ottr
+        uses: tj-actions/changed-files@v14.5
         with:
-          files: |
-             base_ottr/Dockerfile
-             base_ottr/github_package_list.tsv
+          files: base_ottr/*
 
-      - name: Base ottr changed?
-        uses: tj-actions/verify-changed-files@v8.8
-        id: ottrpal-changed
+      - name: Get specific changed files
+        id: ottrpal
+        uses: tj-actions/changed-files@v14.5
         with:
-          files: ottrpal/Dockerfile
+          files: ottrpal/*
+
+      - name: Get specific changed files
+        id: bioconductor
+        uses: tj-actions/changed-files@v14.5
+        with:
+          files: bioconductor/*
+
+      - run: |
+          echo ${{steps.base_ottr.outputs.any_changed}}
+          echo ${{steps.ottrpal.outputs.any_changed}}
+          echo ${{steps.bioconductor.outputs.any_changed}}
 
     outputs:
-      base_change: steps.verify-changed-files.outputs.base_ottr-changed
-      ottrpal_change: steps.verify-changed-files.outputs.ottrpal-changed
+      base_ottr_changed: ${{steps.base_ottr.outputs.any_changed}}
+      ottrpal_changed: ${{steps.ottrpal.outputs.any_changed}}
+      bioconductor_changed: ${{steps.bioconductor.outputs.any_changed}}
 
   build-base:
     name: Build base ottr image
-    needs: files-changed
+    needs: dockerfiles-changed
+    if: ${{needs.dockerfiles-changed.outputs.base_ottr_changed == 'true'}}
     uses: ./.github/workflows/docker-test.yml
     with:
       directory: base_ottr
@@ -49,10 +58,22 @@ jobs:
 
   build-ottrpal:
     name: Build ottrpal image
-    needs: files-changed
+    needs: dockerfiles-changed
+    if: ${{needs.dockerfiles-changed.outputs.ottrpal_changed == 'true'}}
     uses: ./.github/workflows/docker-test.yml
     with:
       directory: ottrpal
       tag: jhudsl/ottrpal
+    secrets:
+      GH_PAT: ${{ secrets.GH_PAT }}
+
+  build-bioconductor:
+    name: Build bioconductor image
+    needs: dockerfiles-changed
+    if: ${{needs.dockerfiles-changed.outputs.bioconductor_changed == 'true'}}
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      directory: bioconductor
+      tag: jhudsl/ottr_bioconductor
     secrets:
       GH_PAT: ${{ secrets.GH_PAT }}
