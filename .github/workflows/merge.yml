@@ -17,30 +17,33 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Base ottr changed?
-        uses: tj-actions/verify-changed-files@v8.8
-        id: base_ottr-changed
+      - name: Get specific changed files
+        id: base_ottr
+        uses: tj-actions/changed-files@v14.5
         with:
-          files: |
-             base_ottr/Dockerfile
-             base_ottr/github_package_list.tsv
+          files: base_ottr/*
 
-      - name: Base ottr changed?
-        uses: tj-actions/verify-changed-files@v8.8
-        id: ottrpal-changed
+      - name: Get specific changed files
+        id: ottrpal
+        uses: tj-actions/changed-files@v14.5
         with:
-          files: ottrpal/Dockerfile
+          files: ottrpal/*
 
-      - name: Bioconductor image changed?
-        uses: tj-actions/verify-changed-files@v8.8
-        id: bioconductor-changed
+      - name: Get specific changed files
+        id: bioconductor
+        uses: tj-actions/changed-files@v14.5
         with:
           files: bioconductor/*
 
+      - run: |
+          echo ${{steps.base_ottr.outputs.any_changed}}
+          echo ${{steps.ottrpal.outputs.any_changed}}
+          echo ${{steps.bioconductor.outputs.any_changed}}
+
     outputs:
-      base_change: steps.verify-changed-files.outputs.base_ottr-changed
-      ottrpal_change: steps.verify-changed-files.outputs.ottrpal-changed
-      bioconductor_change: steps.files-changed.outputs.bioconductor-changed
+      base_ottr_changed: ${{steps.base_ottr.outputs.any_changed}}
+      ottrpal_changed: ${{steps.ottrpal.outputs.any_changed}}
+      bioconductor_changed: ${{steps.bioconductor.outputs.any_changed}}
 
   build-base:
     name: Build base ottr image
