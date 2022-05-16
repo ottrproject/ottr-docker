@@ -10,7 +10,8 @@ RUN apt-get install -y --no-install-recommends \
     vim \
     libglpk40 \
     curl \
-    gpg
+    gpg \
+    subversion
 
 # Install R
 RUN apt-get update && apt-get install -y r-base curl
