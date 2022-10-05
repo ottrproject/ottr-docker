@@ -52,7 +52,7 @@ jobs:
     uses: ./.github/workflows/docker-test.yml
     with:
       directory: base_ottr
-      tag: jhudsl/course_template
+      tag: jhudsl/base_ottr
     secrets:
       GH_PAT: ${{ secrets.GH_PAT }}
 
