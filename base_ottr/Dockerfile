@@ -62,6 +62,9 @@ RUN Rscript -e  "options(warn = 2);install.packages( \
 # cow needs this dependency:
 RUN Rscript -e  "devtools::install_version('gitcreds', version = '0.1.1', repos = 'http://cran.us.r-project.org')"
 
+# lifecycle needs an updated version of rlang
+RUN Rscript -e  "install.packages('https://cran.r-project.org/src/contrib/Archive/rlang/rlang_1.0.5.tar.gz', repos = NULL, type='source')"
+
 # Didactr needs this dependency:
 RUN Rscript -e  "devtools::install_version('lifecycle', version = '1.0.0', repos = 'http://cran.us.r-project.org')"
 
