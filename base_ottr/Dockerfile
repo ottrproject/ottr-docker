@@ -48,6 +48,7 @@ RUN Rscript -e "remove.packages('rlang')"
 RUN Rscript -e  "options(warn = 2);install.packages( \
     c('rlang', \
       'bookdown', \
+      'emojifont', \
       'here', \
       'leanpubr', \
       'optparse', \
