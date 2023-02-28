@@ -42,9 +42,13 @@ RUN apt-get update -qq && apt-get -y --no-install-recommends install \
 RUN apt-get -y --no-install-recommends install \
     python3-pip  python3-dev
 
+RUN Rscript -e "remove.packages('rlang')"
+
 # Commonly used R packages
 RUN Rscript -e  "options(warn = 2);install.packages( \
-    c('bookdown', \
+    c('rlang', \
+      'bookdown', \
+      'emojifont', \
       'here', \
       'leanpubr', \
       'optparse', \
@@ -61,9 +65,6 @@ RUN Rscript -e  "options(warn = 2);install.packages( \
 
 # cow needs this dependency:
 RUN Rscript -e  "devtools::install_version('gitcreds', version = '0.1.1', repos = 'http://cran.us.r-project.org')"
-
-# Didactr needs this dependency:
-RUN Rscript -e  "devtools::install_version('lifecycle', version = '1.0.0', repos = 'http://cran.us.r-project.org')"
 
 # Copy over git token and package list
 COPY git_token.txt .
