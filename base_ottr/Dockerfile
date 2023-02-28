@@ -42,7 +42,7 @@ RUN apt-get update -qq && apt-get -y --no-install-recommends install \
 RUN apt-get -y --no-install-recommends install \
     python3-pip  python3-dev
 
-RUN Rscript -e "remove.packages(rlang)"
+RUN Rscript -e "remove.packages('rlang')"
 
 # Commonly used R packages
 RUN Rscript -e  "options(warn = 2);install.packages( \
