@@ -20,7 +20,7 @@ RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/g
 RUN apt update && apt install -y gh;
 
 # Remove old symlinks to old pandoc
-RUN unlink /usr/lib/rstudio-server/bin/pandoc/pandoc
+# RUN unlink /usr/lib/rstudio-server/bin/pandoc/pandoc
 
 # Uninstall old version of pandoc
 RUN sudo apt-get purge pandoc pandoc-citeproc pandoc-data \
