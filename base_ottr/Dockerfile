@@ -27,7 +27,7 @@ RUN sudo apt-get purge pandoc pandoc-citeproc pandoc-data \
   && sudo apt-get autoremove --purge
 
 # Install pandoc
-RUN wget https://github.com/jgm/pandoc/releases/download/2.14.1/pandoc-2.14.1-1-amd64.deb \
+RUN wget https://github.com/jgm/pandoc/releases/download/2.14.1/pandoc-2.14.1-1-amd64.deb --no-check-certificate \
   && sudo apt-get install ./pandoc-2.14.1-1-amd64.deb
 
 # Create new symlinks
