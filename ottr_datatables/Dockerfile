@@ -28,7 +28,7 @@ RUN wget https://github.com/jgm/pandoc/releases/download/2.14.1/pandoc-2.14.1-1-
   && sudo apt-get install ./pandoc-2.14.1-1-amd64.deb
 
 # Create new symlinks
-RUN ln -s /usr/bin/pandoc /usr/lib/rstudio-server/bin/pandoc/pandoc
+RUN ln -s /usr/bin/pandoc /usr/lib/rstudio-server/bin/pandoc
 
 # Add curl, bzip2
 RUN apt-get update -qq && apt-get -y --no-install-recommends install \
