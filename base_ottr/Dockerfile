@@ -58,6 +58,7 @@ RUN Rscript -e  "options(warn = 2);install.packages( \
       'spelling', \
       'styler', \
       'reticulate', \
+      'gh', \
       'tibble'), \
       repos = 'https://cloud.r-project.org/')"
 
