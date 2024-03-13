@@ -1,4 +1,4 @@
-# Candace Savonen May 2022
+# Candace Savonen March 2024
 
 name: Pull Request
 
@@ -47,12 +47,19 @@ jobs:
         with:
           files: ottr_python/*
 
+      - name: Get specific changed files
+        id: quarto
+        uses: tj-actions/changed-files@v14.5
+        with:
+          files: ottr_quarto/*
+
       - run: |
           echo ${{steps.base_ottr.outputs.any_changed}}
           echo ${{steps.ottrpal.outputs.any_changed}}
           echo ${{steps.bioconductor.outputs.any_changed}}
           echo ${{steps.jekyll.outputs.any_changed}}
           echo ${{steps.python.outputs.any_changed}}
+          echo ${{steps.quarto.outputs.any_changed}}
 
     outputs:
       base_ottr_changed: ${{steps.base_ottr.outputs.any_changed}}
@@ -60,6 +67,7 @@ jobs:
       bioconductor_changed: ${{steps.bioconductor.outputs.any_changed}}
       jekyll_changed: ${{steps.jekyll.outputs.any_changed}}
       python_changed: ${{steps.python.outputs.any_changed}}
+      quarto_changed: ${{steps.quarto.outputs.any_changed}}
 
   build-base:
     name: Build base ottr image
@@ -113,5 +121,16 @@ jobs:
     with:
       directory: ottr_python
       tag: jhudsl/ottr_python
+    secrets:
+      GH_PAT: ${{ secrets.GH_PAT }}
+
+  build-quarto:
+    name: Build quarto ottr image
+    needs: dockerfiles-changed
+    if: ${{needs.dockerfiles-changed.outputs.quarto_changed == 'true'}}
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      directory: ottr_quarto
+      tag: jhudsl/ottr_quarto
     secrets:
       GH_PAT: ${{ secrets.GH_PAT }}

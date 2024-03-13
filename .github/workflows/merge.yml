@@ -103,13 +103,27 @@ jobs:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
+  build-jekyll:
+    name: Build jekyll image
+    needs: dockerfiles-changed
+    if: ${{needs.dockerfiles-changed.outputs.jekyll_changed == 'true'}}
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      directory: ottr_jekyll
+      tag: jhudsl/ottr_jekyll
+      dockerhubpush: true
+    secrets:
+      GH_PAT: ${{ secrets.GH_PAT }}
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+      
   build-python:
     name: Build python image
     needs: dockerfiles-changed
     if: ${{needs.dockerfiles-changed.outputs.python_changed == 'true'}}
     uses: ./.github/workflows/docker-test.yml
     with:
-      directory: python
+      directory: ottr_python
       tag: jhudsl/ottr_python
       dockerhubpush: true
     secrets:
@@ -117,14 +131,14 @@ jobs:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
-  build-jekyll:
-    name: Build jekyll image
+  build-quarto:
+    name: Build quarto image
     needs: dockerfiles-changed
-    if: ${{needs.dockerfiles-changed.outputs.jekyll_changed == 'true'}}
+    if: ${{needs.dockerfiles-changed.outputs.quarto_changed == 'true'}}
     uses: ./.github/workflows/docker-test.yml
     with:
-      directory: jekyll
-      tag: jhudsl/ottr_jekyll
+      directory: ottr_quarto
+      tag: jhudsl/ottr_quarto
       dockerhubpush: true
     secrets:
       GH_PAT: ${{ secrets.GH_PAT }}
