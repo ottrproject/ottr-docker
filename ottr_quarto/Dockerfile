@@ -77,5 +77,8 @@ RUN Rscript install_github.R \
   --packages github_package_list.tsv \
   --token git_token.txt
 
+RUN curl -LO https://quarto.org/download/latest/quarto-linux-amd64.deb
+RUN gdebi --non-interactive quarto-linux-amd64.deb
+
 # Set final workdir for commands
 WORKDIR /home/rstudio
