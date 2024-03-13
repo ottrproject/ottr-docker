@@ -35,15 +35,31 @@ jobs:
         with:
           files: bioconductor/*
 
+      - name: Get specific changed files
+        id: python
+        uses: tj-actions/changed-files@v14.5
+        with:
+          files: python/*
+
+      - name: Get specific changed files
+        id: python
+        uses: tj-actions/changed-files@v14.5
+        with:
+          files: jekyll/*
+
       - run: |
           echo ${{steps.base_ottr.outputs.any_changed}}
           echo ${{steps.ottrpal.outputs.any_changed}}
           echo ${{steps.bioconductor.outputs.any_changed}}
+          echo ${{steps.python.outputs.any_changed}}
+          echo ${{steps.jekyll.outputs.any_changed}}
 
     outputs:
       base_ottr_changed: ${{steps.base_ottr.outputs.any_changed}}
       ottrpal_changed: ${{steps.ottrpal.outputs.any_changed}}
       bioconductor_changed: ${{steps.bioconductor.outputs.any_changed}}
+      python_changed: ${{steps.python.outputs.any_changed}}
+      jekyll_changed: ${{steps.jekyll.outputs.any_changed}}
 
   build-base:
     name: Build base ottr image
@@ -81,6 +97,34 @@ jobs:
     with:
       directory: bioconductor
       tag: jhudsl/ottr_bioconductor
+      dockerhubpush: true
+    secrets:
+      GH_PAT: ${{ secrets.GH_PAT }}
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  build-python:
+    name: Build python image
+    needs: dockerfiles-changed
+    if: ${{needs.dockerfiles-changed.outputs.python_changed == 'true'}}
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      directory: python
+      tag: jhudsl/ottr_python
+      dockerhubpush: true
+    secrets:
+      GH_PAT: ${{ secrets.GH_PAT }}
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  build-jekyll:
+    name: Build jekyll image
+    needs: dockerfiles-changed
+    if: ${{needs.dockerfiles-changed.outputs.jekyll_changed == 'true'}}
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      directory: jekyll
+      tag: jhudsl/ottr_jekyll
       dockerhubpush: true
     secrets:
       GH_PAT: ${{ secrets.GH_PAT }}
