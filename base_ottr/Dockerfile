@@ -54,6 +54,7 @@ RUN Rscript -e  "options(warn = 2);install.packages( \
       'R.utils', \
       'rprojroot', \
       'rgoogleslides', \
+      'googlesheets4', \
       'servr', \
       'spelling', \
       'styler', \
