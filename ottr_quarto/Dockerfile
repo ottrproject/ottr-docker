@@ -13,7 +13,7 @@ RUN gdebi --non-interactive quarto-linux-amd64.deb
 
 # Install quarto R package
 RUN Rscript -e  "options(warn = 2);install.packages( \
-    c('quarto')
+    c('quarto'))
 
 # Set final workdir for commands
 WORKDIR /home/rstudio
