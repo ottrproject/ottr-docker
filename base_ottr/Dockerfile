@@ -60,7 +60,8 @@ RUN Rscript -e  "options(warn = 2);install.packages( \
       'styler', \
       'reticulate', \
       'gh', \
-      'tibble'), \
+      'tibble', \
+      'config'), \
       repos = 'https://cloud.r-project.org/')"
 
 # cow needs this dependency:
