@@ -1,4 +1,4 @@
-FROM jhudsl/ottr_base:main
+FROM jhudsl/base_ottr:main
 LABEL maintainer="cansav09@gmail.com"
 
 # Install apt-getable packages to start
