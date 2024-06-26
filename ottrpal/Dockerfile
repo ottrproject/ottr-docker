@@ -26,6 +26,6 @@ COPY github_package_list.tsv .
 
 # Install development version of ottrpal!
 RUN Rscript install_github.R \
-  --packages 'ottrpal' \
+  --packages github_package_list.tsv \
   --token git_token.txt
 
