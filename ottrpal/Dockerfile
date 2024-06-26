@@ -19,3 +19,13 @@ RUN apt-get update && apt-get install -y r-base curl
 # Install R packages
 RUN Rscript -e  "install.packages(c('curl', 'chromote', 'webshot2'))"
 
+# Copy over git token
+COPY git_token.txt .
+COPY install_github.R .
+COPY github_package_list.tsv .
+
+# Install development version of ottrpal!
+RUN Rscript install_github.R \
+  --packages github_package_list.tsv \
+  --token git_token.txt
+
