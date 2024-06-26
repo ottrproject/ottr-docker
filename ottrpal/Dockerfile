@@ -22,9 +22,10 @@ RUN Rscript -e  "install.packages(c('curl', 'chromote', 'webshot2'))"
 # Copy over git token
 COPY git_token.txt .
 COPY install_github.R .
+COPY github_package_list.tsv .
 
 # Install development version of ottrpal!
 RUN Rscript install_github.R \
-  --packages ottrpal \
+  --packages 'ottrpal' \
   --token git_token.txt
 
