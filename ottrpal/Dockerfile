@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y r-base curl
 
 # Install R packages
 RUN Rscript -e  "options(warn = 2);install.packages( \
-	'curl', \
+	c('curl', \
 	'chromote', \
 	'webshot2'), \
 	repos = 'https://cloud.r-project.org/')"
