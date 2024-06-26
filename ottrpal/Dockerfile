@@ -17,7 +17,11 @@ RUN apt-get install -y --no-install-recommends \
 RUN apt-get update && apt-get install -y r-base curl
 
 # Install R packages
-RUN Rscript -e  "install.packages(c('curl', 'chromote', 'webshot2'))"
+RUN Rscript -e  "options(warn = 2);install.packages( \
+	'curl', \
+	'chromote', \
+	'webshot2'), \
+	repos = 'https://cloud.r-project.org/')"
 
 # Copy over git token
 COPY git_token.txt .
