@@ -29,3 +29,7 @@ RUN Rscript install_github.R \
   --packages github_package_list.tsv \
   --token git_token.txt
 
+RUN wget https://downloads.vivaldi.com/stable/vivaldi-stable_5.5.2805.35-1_amd64.deb 
+RUN apt-get update && apt-get install -y ./vivaldi-stable_5.5.2805.35-1_amd64.deb && rm -rf /var/lib/apt/lists/*
+
+RUN echo CHROMOTE_CHROME=/usr/bin/vivaldi >> .Renviron
