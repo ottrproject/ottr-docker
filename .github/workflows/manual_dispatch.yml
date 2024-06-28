@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       directory:
-        description: 'What is the file path to the folder that contains the Dockerfile starting from the base of the repo?'
+        description: 'File path on GitHub to Dockerfile? e.g. base_ottr'
         required: true
         type: string
       tag:
