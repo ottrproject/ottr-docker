@@ -35,11 +35,21 @@ RUN apt-get update -qq && apt-get -y --no-install-recommends install \
     bzip2 \
     curl
 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    pandoc \
+    pandoc-citeproc \
+    curl \
+    gdebi-core \
+    && rm -rf /var/lib/apt/lists/*
+
 # Install pip3 and installation tools
 RUN apt-get -y --no-install-recommends install \
     python3-pip  python3-dev
 
 RUN Rscript -e "remove.packages('rlang')"
+
+RUN curl -LO https://quarto.org/download/latest/quarto-linux-amd64.deb
+RUN gdebi --non-interactive quarto-linux-amd64.deb
 
 # Commonly used R packages
 RUN Rscript -e  "options(warn = 2);install.packages( \
@@ -61,7 +71,8 @@ RUN Rscript -e  "options(warn = 2);install.packages( \
       'reticulate', \
       'gh', \
       'tibble', \
-      'config'), \
+      'config', \
+      'quarto'), \
       repos = 'https://cloud.r-project.org/')"
 
 # cow needs this dependency:
