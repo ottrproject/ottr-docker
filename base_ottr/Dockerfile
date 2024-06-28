@@ -40,11 +40,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     pandoc-citeproc \
     curl \
     gdebi-core \
+    python3-pip \
+    python3-dev \
     && rm -rf /var/lib/apt/lists/*
-
-# Install pip3 and installation tools
-RUN apt-get -y --no-install-recommends install \
-    python3-pip  python3-dev
 
 RUN Rscript -e "remove.packages('rlang')"
 
