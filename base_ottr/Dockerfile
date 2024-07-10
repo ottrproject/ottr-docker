@@ -70,7 +70,9 @@ RUN Rscript -e  "options(warn = 2);install.packages( \
       'gh', \
       'tibble', \
       'config', \
-      'quarto'), \
+      'quarto', \
+      'chromote', \
+      'webshot2'), \
       repos = 'https://cloud.r-project.org/')"
 
 # cow needs this dependency:
@@ -87,3 +89,8 @@ RUN Rscript install_github.R \
 
 # Set final workdir for commands
 WORKDIR /home/rstudio
+
+RUN wget https://downloads.vivaldi.com/stable/vivaldi-stable_5.5.2805.35-1_amd64.deb 
+RUN apt-get update && apt-get install -y ./vivaldi-stable_5.5.2805.35-1_amd64.deb && rm -rf /var/lib/apt/lists/*
+
+RUN echo CHROMOTE_CHROME=/usr/bin/vivaldi >> .Renviron
