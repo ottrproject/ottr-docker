@@ -70,7 +70,8 @@ RUN Rscript -e  "options(warn = 2);install.packages( \
       'gh', \
       'tibble', \
       'config', \
-      'quarto'), \
+      'quarto', \
+      'webshot2'), \
       repos = 'https://cloud.r-project.org/')"
 
 # cow needs this dependency:
