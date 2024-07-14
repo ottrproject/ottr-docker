@@ -78,6 +78,8 @@ RUN Rscript -e  "options(warn = 2);install.packages( \
 # cow needs this dependency:
 RUN Rscript -e  "devtools::install_version('gitcreds', version = '0.1.1', repos = 'http://cran.us.r-project.org')"
 
+WORKDIR /
+
 # Copy over git token and package 
 RUN --mount=type=secret,id=GH_PAT \
   cat /run/secrets/GH_PAT
@@ -87,6 +89,8 @@ COPY github_package_list.tsv .
 RUN Rscript install_github.R \
   --packages github_package_list.tsv \
   --token cat /run/secrets/GH_PAT
+
+RUN rm /run/secrets/GH_PAT
 
 # Set final workdir for commands
 WORKDIR /home/rstudio
