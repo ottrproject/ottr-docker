@@ -1,5 +1,15 @@
 FROM rocker/tidyverse:4.3.2
 LABEL maintainer="cansav09@gmail.com"
+
+COPY install_github.R .
+COPY github_package_list.tsv .
+
+# Install packages from github
+RUN --mount=type=secret,id=gh_pat \
+  Rscript install_github.R \
+  --packages github_package_list.tsv \
+  --token "$(sed -i s/GH_PAT=/GH_PAT=$(cat /run/secrets/gh_pat)/ .env.production)
+
 WORKDIR /rocker-build/
 
 # Install apt-getable packages to start
@@ -75,16 +85,6 @@ RUN Rscript -e  "options(warn = 2);install.packages( \
 
 # cow needs this dependency:
 RUN Rscript -e  "devtools::install_version('gitcreds', version = '0.1.1', repos = 'http://cran.us.r-project.org')"
-
-WORKDIR /
-COPY install_github.R .
-COPY github_package_list.tsv .
-
-# Install packages from github
-RUN --mount=type=secret,id=gh_pat \
-  Rscript install_github.R \
-  --packages github_package_list.tsv \
-  --token "$(sed -i s/GH_PAT=/GH_PAT=$(cat /run/secrets/gh_pat)/ .env.production)"
 
 # Set final workdir for commands
 WORKDIR /home/rstudio
