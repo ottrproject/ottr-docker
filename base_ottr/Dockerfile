@@ -78,15 +78,13 @@ RUN Rscript -e  "devtools::install_version('gitcreds', version = '0.1.1', repos 
 
 WORKDIR /
 COPY install_github.R .
-# Copy over git token and package 
-RUN --mount=type=secret,id=GH_PAT \
-  cat /run/secrets/GH_PAT
 COPY github_package_list.tsv .
 
 # Install packages from github
-RUN Rscript install_github.R \
+RUN --mount=type=secret,id=GH_PAT \
+  Rscript install_github.R \
   --packages github_package_list.tsv \
-  --token "$(<./GH_PAT.txt)"
+  --token "$(<run/secrets/GH_PAT.txt)"
 
 RUN rm ./GH_PAT.txt
 
