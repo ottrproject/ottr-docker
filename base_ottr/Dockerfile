@@ -79,7 +79,8 @@ RUN Rscript -e  "options(warn = 2);install.packages( \
 RUN Rscript -e  "devtools::install_version('gitcreds', version = '0.1.1', repos = 'http://cran.us.r-project.org')"
 
 # Copy over git token and package 
-RUN --mount=type=secret,id=GH_PAT 
+RUN --mount=type=secret,id=GH_PAT \
+  cat /run/secrets/GH_PAT
 COPY github_package_list.tsv .
 
 # Install packages from github
