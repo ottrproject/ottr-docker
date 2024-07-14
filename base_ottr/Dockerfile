@@ -2,8 +2,6 @@ FROM rocker/tidyverse:4.3.2
 LABEL maintainer="cansav09@gmail.com"
 WORKDIR /rocker-build/
 
-COPY install_github.R .
-
 # Install apt-getable packages to start
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils dialog
 RUN apt-get install -y --no-install-recommends \
@@ -79,7 +77,7 @@ RUN Rscript -e  "options(warn = 2);install.packages( \
 RUN Rscript -e  "devtools::install_version('gitcreds', version = '0.1.1', repos = 'http://cran.us.r-project.org')"
 
 WORKDIR /
-
+COPY install_github.R .
 # Copy over git token and package 
 RUN --mount=type=secret,id=GH_PAT \
   cat /run/secrets/GH_PAT
