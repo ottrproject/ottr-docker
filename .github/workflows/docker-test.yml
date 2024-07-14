@@ -29,8 +29,6 @@ jobs:
   build-docker:
     name: Build Docker image
     runs-on: ubuntu-latest
-    container:
-      image: bash    
 
     steps:
       - name: checkout repo
@@ -49,10 +47,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-
 
-      - name: Set up Docker Build
-        run: |
-          cd ${{ inputs.directory }}
-          docker build --secrets ${{secrets.GH_PAT}} -t ${{ inputs.tag }} . 
+      - name: Build
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ inputs.directory }}
+          tags: ${{ inputs.tag }}
+          secrets: |
+            "github_token=${{ secrets.GH_PAT }}"            
 
       # Login to Dockerhub
       - name: Login to DockerHub
