@@ -53,7 +53,7 @@ jobs:
           context: ${{ inputs.directory }}
           tags: ${{ inputs.tag }}
           secrets: |
-            "GH_PAT=${{ secrets.GH_PAT }}"            
+            "gh_pat=${{ secrets.GH_PAT }}"            
 
       # Login to Dockerhub
       - name: Login to DockerHub
