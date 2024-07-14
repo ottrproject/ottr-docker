@@ -84,7 +84,7 @@ COPY github_package_list.tsv .
 RUN --mount=type=secret,id=gh_pat \
   Rscript install_github.R \
   --packages github_package_list.tsv \
-  --token sed -i "s/GH_PAT=/GH_PAT=$(cat /run/secrets/gh_pat)/" .env.production
+  --token "$(sed -i s/GH_PAT=/GH_PAT=$(cat /run/secrets/gh_pat)/ .env.production)"
 
 # Set final workdir for commands
 WORKDIR /home/rstudio
