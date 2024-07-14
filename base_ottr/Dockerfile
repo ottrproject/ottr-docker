@@ -86,9 +86,9 @@ COPY github_package_list.tsv .
 # Install packages from github
 RUN Rscript install_github.R \
   --packages github_package_list.tsv \
-  --token "$(</run/secrets/GH_PAT)"
+  --token "$(<./GH_PAT.txt)"
 
-RUN rm /run/secrets/GH_PAT
+RUN rm ./GH_PAT.txt
 
 # Set final workdir for commands
 WORKDIR /home/rstudio
