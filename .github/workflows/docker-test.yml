@@ -30,6 +30,7 @@ jobs:
   build-docker:
     name: Build Docker image
     runs-on: ubuntu-latest
+     
 
     steps:
       - name: checkout repo
@@ -64,9 +65,6 @@ jobs:
 
       - name: Set up Docker Build
         uses: docker/setup-buildx-action@v1
-
-      - name: Get token
-        run: echo ${{ secrets.GH_PAT }} > ${{ inputs.directory }}/git_token.txt
 
       - name: Build Docker image
         uses: docker/build-push-action@v4
