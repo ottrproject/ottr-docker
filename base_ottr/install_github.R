@@ -31,7 +31,7 @@ option_list <- list(
 opt <- parse_args(OptionParser(option_list = option_list))
 
 # Read in the token
-token <- as.character(readLines(opt$token)[1])
+token <- as.character(opt$tokens)
 
 # Reset GITHUB PAT to be token
 Sys.unsetenv("GITHUB_PAT")
@@ -47,6 +47,3 @@ purrr::pmap(
                            auth_token = token,
                            ref = ..2)
                 )
-
-# Remove the file after we are done
-file.remove(opt$token)
