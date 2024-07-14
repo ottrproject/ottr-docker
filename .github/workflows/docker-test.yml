@@ -1,4 +1,4 @@
-
+hi
 # Candace Savonen Apr 2022
 
 name: Build Docker Image
@@ -31,7 +31,7 @@ jobs:
     name: Build Docker image
     runs-on: ubuntu-latest
     container:
-      image: docker    
+      image: bash    
 
     steps:
       - name: checkout repo
