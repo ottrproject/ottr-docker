@@ -5,6 +5,9 @@ COPY install_github.R .
 COPY github_package_list.tsv .
 
 # Install packages from github
+RUN --mount=type=secret,id=gh_pat
+  cat /run/secrets/gh_pat)
+
 RUN --mount=type=secret,id=gh_pat \
   Rscript install_github.R \
   --packages github_package_list.tsv \
@@ -89,7 +92,7 @@ RUN Rscript -e  "devtools::install_version('gitcreds', version = '0.1.1', repos 
 # Set final workdir for commands
 WORKDIR /home/rstudio
 
-RUN wget https://downloads.vivaldi.com/stable/vivaldi-stable_5.5.2805.35-1_amd64.deb 
+RUN wget https://downloads.vivaldi.com/stable/vivaldi-stable_5.5.2805.35-1_amd64.deb
 RUN apt-get update && apt-get install -y ./vivaldi-stable_5.5.2805.35-1_amd64.deb && rm -rf /var/lib/apt/lists/*
 
 RUN echo CHROMOTE_CHROME=/usr/bin/vivaldi >> .Renviron

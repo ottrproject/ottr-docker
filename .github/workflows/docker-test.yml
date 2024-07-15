@@ -33,7 +33,7 @@ jobs:
     steps:
       - name: checkout repo
         uses: actions/checkout@v3
-        
+
       # Set up Docker build
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -50,10 +50,13 @@ jobs:
       - name: Build
         uses: docker/build-push-action@v6
         with:
+          push: false
           context: ${{ inputs.directory }}
+          file: ${{ inputs.directory }}/Dockerfile
+          platforms: linux/amd64
           tags: ${{ inputs.tag }}
           secrets: |
-            "gh_pat=${{ secrets.GH_PAT }}"            
+            "gh_pat=${{ secrets.GH_PAT }}"
 
       # Login to Dockerhub
       - name: Login to DockerHub
