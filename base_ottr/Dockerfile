@@ -5,10 +5,7 @@ LABEL maintainer="cansav09@gmail.com"
 COPY install_github.R .
 COPY github_package_list.tsv .
 
-RUN --mount=type=secret,id=github_token \
-  Rscript -e "remotes::install_github('jhudsl/ottrpal', \
-     auth_token = '$(cat /run/secrets/github_token)', \
-     ref = 'HEAD')"
+RUN installGithub.r jhudsl/ottrpal
 
 WORKDIR /rocker-build/
 
