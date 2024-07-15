@@ -4,9 +4,8 @@ LABEL maintainer="cansav09@gmail.com"
 COPY install_github.R .
 COPY github_package_list.tsv .
 
-# Install packages from github
-RUN --mount=type=secret,id=gh_pat
-  cat /run/secrets/gh_pat)
+RUN --mount=type=secret,id=gh_pat \
+    sed -i "s/GH_PAT=/GH_PAT=$(cat /run/secrets/gh_pat)/" .env.production
 
 RUN --mount=type=secret,id=gh_pat \
   Rscript install_github.R \
