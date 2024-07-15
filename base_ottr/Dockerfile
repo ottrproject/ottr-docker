@@ -85,7 +85,7 @@ RUN Rscript -e  "devtools::install_version('gitcreds', version = '0.1.1', repos 
 
 RUN installGithub.r \
   jhudsl/ottrpal \
-  jhudsl/cow t
+  jhudsl/cow
 
 # Set final workdir for commands
 WORKDIR /home/rstudio
