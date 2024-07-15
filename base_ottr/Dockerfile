@@ -8,7 +8,7 @@ COPY github_package_list.tsv .
 RUN --mount=type=secret,id=github_token \
   Rscript install_github.R \
   --packages github_package_list.tsv \
-  --token /run/secrets/github_token
+  --token '/run/secrets/github_token'
 
 WORKDIR /rocker-build/
 

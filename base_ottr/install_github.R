@@ -31,7 +31,7 @@ option_list <- list(
 opt <- parse_args(OptionParser(option_list = option_list))
 
 # Read in the token
-token <- readLines(as.character(opt$tokens)[1])
+token <- readLines(opt$tokens)
 
 message(token)
 
