@@ -6,9 +6,9 @@ COPY install_github.R .
 COPY github_package_list.tsv .
 
 RUN --mount=type=secret,id=github_token \
-  Rscript install_github.R \
-  --packages github_package_list.tsv \
-  --token $(cat /run/secrets/github_token)
+  Rscript -e "remotes::install_github(ottrpal, \
+     auth_token = $(cat /run/secrets/github_token), \
+     ref = 'HEAD')"
 
 WORKDIR /rocker-build/
 
