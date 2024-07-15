@@ -12,9 +12,9 @@ option_list <- list(
   make_option(
     opt_str = c("-p", "--packages"), type = "character",
     default = "github_package_list.tsv" ,
-    help = "Path to a TSV with a list of packages to be installed through Github, 
-    where file where the first column is the github package name e.g. 
-    jhudsl/ottrpal and the second column is the commit ID to be installed 
+    help = "Path to a TSV with a list of packages to be installed through Github,
+    where file where the first column is the github package name e.g.
+    jhudsl/ottrpal and the second column is the commit ID to be installed
     (to be supplied to the ref argument).
     ",
     metavar = "character"
@@ -30,6 +30,8 @@ option_list <- list(
 # Parse options
 opt <- parse_args(OptionParser(option_list = option_list))
 
+write(as.character(opt$tokens), stdout())
+
 # Read in the token
 token <- as.character(opt$tokens)
 
@@ -38,7 +40,7 @@ Sys.unsetenv("GITHUB_PAT")
 Sys.setenv(GITHUB_PAT = token)
 
 # set up list of packages to install
-packages <- readr::read_tsv(opt$packages, 
+packages <- readr::read_tsv(opt$packages,
                                 col_names = c("package_name", "ref"))
 
 purrr::pmap(
