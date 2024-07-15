@@ -24,6 +24,10 @@ on:
       DOCKERHUB_TOKEN:
         required: false
 
+defaults:
+  run:
+    working-directory: ./
+    
 jobs:
 
   build-docker:
