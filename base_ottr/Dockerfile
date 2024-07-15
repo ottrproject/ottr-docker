@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1
 FROM rocker/tidyverse:4.3.2
 LABEL maintainer="cansav09@gmail.com"
 
