@@ -5,12 +5,10 @@ LABEL maintainer="cansav09@gmail.com"
 COPY install_github.R .
 COPY github_package_list.tsv .
 
-RUN --mount=type=secret,id=github_token $(cat /run/secrets/github_token)
-
-RUN --mount=type=secret,id=gh_pat \
+RUN --mount=type=secret,id=github_token \
   Rscript install_github.R \
   --packages github_package_list.tsv \
-  --token "$(sed -i s/GH_PAT=/GH_PAT=$(cat /run/secrets/gh_pat)/)"
+  --token "$(cat /run/secrets/github_token)"
 
 WORKDIR /rocker-build/
 
