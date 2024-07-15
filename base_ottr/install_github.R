@@ -30,10 +30,10 @@ option_list <- list(
 # Parse options
 opt <- parse_args(OptionParser(option_list = option_list))
 
-message(as.character(opt$tokens))
-
 # Read in the token
-token <- as.character(opt$tokens)
+token <- readLines(opt$tokens)
+
+message(token)
 
 # Reset GITHUB PAT to be token
 # Sys.unsetenv("GITHUB_PAT")
