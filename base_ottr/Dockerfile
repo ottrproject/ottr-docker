@@ -2,11 +2,6 @@
 FROM rocker/tidyverse:4.3.2
 LABEL maintainer="cansav09@gmail.com"
 
-COPY install_github.R .
-COPY github_package_list.tsv .
-
-RUN installGithub.r jhudsl/ottrpal
-
 WORKDIR /rocker-build/
 
 # Install apt-getable packages to start
@@ -77,11 +72,20 @@ RUN Rscript -e  "options(warn = 2);install.packages( \
       'config', \
       'quarto', \
       'chromote', \
+      'rvest', \
+      'DT', \
+      'knitr', \
+      'xfun', \
+      'testthat', \
       'webshot2'), \
       repos = 'https://cloud.r-project.org/')"
 
 # cow needs this dependency:
 RUN Rscript -e  "devtools::install_version('gitcreds', version = '0.1.1', repos = 'http://cran.us.r-project.org')"
+
+RUN installGithub.r \
+  jhudsl/ottrpal \
+  jhudsl/cow t
 
 # Set final workdir for commands
 WORKDIR /home/rstudio

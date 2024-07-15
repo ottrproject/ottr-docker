@@ -27,7 +27,7 @@ on:
 defaults:
   run:
     working-directory: ./
-    
+
 jobs:
 
   build-docker:
@@ -59,8 +59,6 @@ jobs:
           file: ${{ inputs.directory }}/Dockerfile
           platforms: linux/amd64
           tags: ${{ inputs.tag }}
-          secrets: |
-            "github_token=${{ secrets.GH_PAT }}"
 
       # Login to Dockerhub
       - name: Login to DockerHub
