@@ -50,35 +50,32 @@ RUN curl -LO https://quarto.org/download/latest/quarto-linux-amd64.deb
 RUN gdebi --non-interactive quarto-linux-amd64.deb
 
 # Commonly used R packages
-RUN Rscript -e  "options(warn = 2);install.packages( \
-    c('rlang', \
-      'bookdown', \
-      'emojifont', \
-      'here', \
-      'leanpubr', \
-      'optparse', \
-      'oro.nifti', \
-      'qpdf', \
-      'R.utils', \
-      'rprojroot', \
-      'rgoogleslides', \
-      'googlesheets4', \
-      'servr', \
-      'spelling', \
-      'styler', \
-      'reticulate', \
-      'gh', \
-      'tibble', \
-      'config', \
-      'quarto', \
-      'chromote', \
-      'rvest', \
-      'DT', \
-      'knitr', \
-      'xfun', \
-      'testthat', \
-      'webshot2'), \
-      repos = 'https://cloud.r-project.org/')"
+RUN install2.r rlang \
+      bookdown \
+      chromote \
+      config \
+      DT \
+      emojifont \
+      gh \
+      googlesheets4 \
+      here \
+      knitr \
+      leanpubr \
+      optparse \
+      R.utils \
+      rprojroot \
+      rgoogleslides \
+      quarto \
+      qpdf \
+      reticulate \
+      rvest \
+      servr \
+      spelling \
+      styler \
+      tibble \
+      testthat \
+      webshot2 \
+      xfun 
 
 # cow needs this dependency:
 RUN Rscript -e  "devtools::install_version('gitcreds', version = '0.1.1', repos = 'http://cran.us.r-project.org')"
