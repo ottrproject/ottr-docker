@@ -2,7 +2,7 @@ FROM bioconductor/bioconductor_docker:RELEASE_3_15
 LABEL maintainer="cansav09@gmail.com"
 WORKDIR /rocker-build/
 
-COPY install_github.R .
+WORKDIR /rocker-build/
 
 # Install apt-getable packages to start
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils dialog
@@ -19,48 +19,76 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | g
 RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null;
 RUN apt update && apt install -y gh;
 
+# Uninstall old version of pandoc
+RUN sudo apt-get purge pandoc pandoc-citeproc pandoc-data \
+  && sudo apt-get autoremove --purge
+
 # Install pandoc
 RUN wget https://github.com/jgm/pandoc/releases/download/2.14.1/pandoc-2.14.1-1-amd64.deb \
   && sudo apt-get install ./pandoc-2.14.1-1-amd64.deb
+
+# Create new symlinks
+RUN ln -s /usr/bin/pandoc /usr/lib/rstudio-server/bin/pandoc
 
 # Add curl, bzip2
 RUN apt-get update -qq && apt-get -y --no-install-recommends install \
     bzip2 \
     curl
 
-# Install pip3 and installation tools
-RUN apt-get -y --no-install-recommends install \
-    python3-pip  python3-dev
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    pandoc \
+    pandoc-citeproc \
+    curl \
+    gdebi-core \
+    python3-pip \
+    python3-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN Rscript -e "remove.packages('rlang')"
+
+RUN curl -LO https://quarto.org/download/latest/quarto-linux-amd64.deb
+RUN gdebi --non-interactive quarto-linux-amd64.deb
 
 # Commonly used R packages
-RUN Rscript -e  "options(warn = 2);install.packages( \
-    c('tidyverse', \
-      'bookdown', \
-      'here', \
-      'leanpubr', \
-      'optparse', \
-      'oro.nifti', \
-      'qpdf', \
-      'R.utils', \
-      'rprojroot', \
-      'rgoogleslides', \
-      'servr', \
-      'spelling', \
-      'styler', \
-      'reticulate'), \
-      repos = 'https://cloud.r-project.org/')"
+RUN install2.r rlang \
+      bookdown \
+      chromote \
+      config \
+      DT \
+      emojifont \
+      gh \
+      googlesheets4 \
+      here \
+      knitr \
+      leanpubr \
+      optparse \
+      R.utils \
+      rprojroot \
+      rgoogleslides \
+      quarto \
+      qpdf \
+      reticulate \
+      rvest \
+      servr \
+      spelling \
+      styler \
+      tibble \
+      testthat \
+      webshot2 \
+      xfun 
 
 # cow needs this dependency:
 RUN Rscript -e  "devtools::install_version('gitcreds', version = '0.1.1', repos = 'http://cran.us.r-project.org')"
 
-# Didactr needs this dependency:
-RUN Rscript -e  "devtools::install_version('lifecycle', version = '1.0.0', repos = 'http://cran.us.r-project.org')"
+RUN installGithub.r \
+  jhudsl/ottrpal \
+  jhudsl/cow
 
-# Copy over git token and package list
-COPY git_token.txt .
-COPY github_package_list.tsv .
+# Set final workdir for commands
+WORKDIR /home/rstudio
 
-# Install packages from github
-RUN Rscript install_github.R \
-  --packages github_package_list.tsv \
-  --token git_token.txt
+RUN wget https://downloads.vivaldi.com/stable/vivaldi-stable_5.5.2805.35-1_amd64.deb
+RUN apt-get update && apt-get install -y ./vivaldi-stable_5.5.2805.35-1_amd64.deb && rm -rf /var/lib/apt/lists/*
+
+RUN echo CHROMOTE_CHROME=/usr/bin/vivaldi >> .Renviron
+
