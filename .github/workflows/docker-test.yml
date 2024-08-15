@@ -51,15 +51,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-
 
-      - name: Build
-        uses: docker/build-push-action@v4
-        with:
-          push: false
-          context: ${{ inputs.directory }}
-          file: ${{ inputs.directory }}/Dockerfile
-          platforms: linux/amd64
-          tags: ${{ inputs.tag }}
-
       # Login to Dockerhub
       - name: Login to DockerHub
         if: ${{ inputs.dockerhubpush != 'false' }}
@@ -67,8 +58,13 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+          
+      - name: Build
+        uses: docker/build-push-action@v4
+        with:
+          push: ${{ inputs.dockerhubpush }}
+          context: ${{ inputs.directory }}
+          file: ${{ inputs.directory }}/Dockerfile
+          platforms: linux/amd64
+          tags: ${{ inputs.tag }}
 
-      # Push the Docker image if set to true from a manual trigger
-      - name: Push Docker image if manual trigger set to true
-        if: ${{ inputs.dockerhubpush != 'false' }}
-        run: docker push ${{ inputs.tag }}
