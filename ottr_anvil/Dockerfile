@@ -1,3 +1,5 @@
+# Usage: for running the analysis part of the AnVIL User Poll
+
 FROM jhudsl/base_ottr:main
 LABEL maintainer="avamariehoffman@gmail.com"
 
