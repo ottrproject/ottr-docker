@@ -1,7 +1,7 @@
 # Usage: for running the analysis part of the AnVIL User Poll
 
 FROM jhudsl/base_ottr:main
-LABEL maintainer="avamariehoffman@gmail.com"
+LABEL maintainer="cansav09@gmail.com"
 
 # Install googlesheets4 and plotting packages
 RUN Rscript -e  "options(warn = 2);install.packages( \
