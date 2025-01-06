@@ -5,7 +5,7 @@ LABEL maintainer="cansav09@gmail.com"
 
 # Install cmake
 
-RUN apt-get update && apt-get install -y cmake
+RUN apt-get update && apt-get install -y --no-install-recommends cmake
 
 # Install googlesheets4 and plotting packages
 RUN Rscript -e  "options(warn = 2);install.packages( \
