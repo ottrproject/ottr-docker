@@ -9,7 +9,7 @@ on:
 jobs:
 
   dockerfile-check:
-    name: Detect changed Dockerfile - ${{ matrix.config.dir }}
+    name: Test changed Dockerfile - ${{ matrix.config.dir }}
     runs-on: ubuntu-latest
 
     strategy:
