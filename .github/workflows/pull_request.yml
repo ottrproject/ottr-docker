@@ -44,7 +44,7 @@ jobs:
     name: Build it
     needs: dockerfiles-check
     if: ${{needs.dockerfiles-check.outputs.any_changed == 'true'}}
-    uses: jhudsl/ottr-reports/.github/workflows/docker-test.yml@main
+    uses: jhudsl/ottr-docker/.github/workflows/docker-test.yml@main
     with:
       directory: ${{ matrix.config.dir }}
       tag: ${{ matrix.config.name }}
