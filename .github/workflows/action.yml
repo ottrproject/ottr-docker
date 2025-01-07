@@ -1,7 +1,7 @@
-# Candace Savonen Apr 2022
+# Candace Savonen Apr 2025
 
-name: Build Docker Image
-description: "Build and push from a dockerfile in the repository"
+name: 'Build Docker Image'
+description: 'Build and push from a dockerfile in the repository'
 inputs:
   directory:
     description: 'What's the file path to this Dockerfile's folder in this repo'
@@ -25,7 +25,10 @@ inputs:
   dockerhub_token:
     description: 'A Dockerhub token that has persmissions to push to this image'
     required: false
-
+outputs:
+  success:
+    value: ${{ steps.push.outcome }}
+    
 runs:
   using: "composite"
   steps:
@@ -46,6 +49,7 @@ runs:
         password: ${{ inputs.dockerhub_token }}
 
     - name: Build
+      id: push
       uses: docker/build-push-action@v6
       with:
         push: ${{ inputs.dockerhubpush }}
