@@ -18,6 +18,7 @@ on:
         type: string
     secrets:
       GH_PAT: ${{ secrets.GH_PAT }}
+        required: true
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
