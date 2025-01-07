@@ -1,4 +1,4 @@
-# Candace Savonen March 2024
+# Candace Savonen Jan 2025
 
 name: Pull Request
 
@@ -8,9 +8,19 @@ on:
 
 jobs:
 
-  dockerfiles-changed:
-    name: Detect changed Dockerfiles
+  dockerfile-check:
+    name: Detect changed Dockerfile - ${{ matrix.config.dir }}
     runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - {dir: base_ottr,   name: 'jhudsl/base_ottr'}
+          - {dir: ottrpal,   name: 'jhudsl/ottrpal'}
+          - {dir: bioconductor,   name: 'jhudsl/ottr_bioconductor'}
+          - {dir: ottr_website,   name: 'jhudsl/ottr_website'}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -18,100 +28,19 @@ jobs:
           fetch-depth: 0
 
       - name: Get specific changed files
-        id: base_ottr
+        id: image_name
         uses: tj-actions/changed-files@v14.5
         with:
-          files: base_ottr/*
+          files: ${{ matrix.config.dir }}/*
 
-      - name: Get specific changed files
-        id: ottrpal
-        uses: tj-actions/changed-files@v14.5
+      - run: echo ${{steps.image_name.outputs.any_changed}}
+
+      - name: Build it
+        uses: ./.github/workflows/docker-test.yml
+        if: ${{steps.image_name.outputs.any_changed == 'true'}}
         with:
-          files: ottrpal/*
-
-      - name: Get specific changed files
-        id: bioconductor
-        uses: tj-actions/changed-files@v14.5
-        with:
-          files: bioconductor/*
-
-      - name: Get specific changed files
-        id: python
-        uses: tj-actions/changed-files@v14.5
-        with:
-          files: ottr_python/*
-
-      - name: Get specific changed files
-        id: quarto
-        uses: tj-actions/changed-files@v14.5
-        with:
-          files: ottr_quarto/*
-
-      - run: |
-          echo ${{steps.base_ottr.outputs.any_changed}}
-          echo ${{steps.ottrpal.outputs.any_changed}}
-          echo ${{steps.bioconductor.outputs.any_changed}}
-          echo ${{steps.python.outputs.any_changed}}
-          echo ${{steps.quarto.outputs.any_changed}}
-
-    outputs:
-      base_ottr_changed: ${{steps.base_ottr.outputs.any_changed}}
-      ottrpal_changed: ${{steps.ottrpal.outputs.any_changed}}
-      bioconductor_changed: ${{steps.bioconductor.outputs.any_changed}}
-      python_changed: ${{steps.python.outputs.any_changed}}
-      quarto_changed: ${{steps.quarto.outputs.any_changed}}
-
-  build-base:
-    name: Build base ottr image
-    needs: dockerfiles-changed
-    if: ${{needs.dockerfiles-changed.outputs.base_ottr_changed == 'true'}}
-    uses: ./.github/workflows/docker-test.yml
-    with:
-      directory: base_ottr
-      tag: jhudsl/base_ottr
-    secrets:
-      GH_PAT: ${{ secrets.GH_PAT }}
-
-  build-ottrpal:
-    name: Build ottrpal image
-    needs: dockerfiles-changed
-    if: ${{needs.dockerfiles-changed.outputs.ottrpal_changed == 'true'}}
-    uses: ./.github/workflows/docker-test.yml
-    with:
-      directory: ottrpal
-      tag: jhudsl/ottrpal
-    secrets:
-      GH_PAT: ${{ secrets.GH_PAT }}
-
-  build-bioconductor:
-    name: Build bioconductor image
-    needs: dockerfiles-changed
-    if: ${{needs.dockerfiles-changed.outputs.bioconductor_changed == 'true'}}
-    uses: ./.github/workflows/docker-test.yml
-    with:
-      directory: bioconductor
-      tag: jhudsl/ottr_bioconductor
-    secrets:
-      GH_PAT: ${{ secrets.GH_PAT }}
-
-  build-python:
-    name: Build python image
-    needs: dockerfiles-changed
-    if: ${{needs.dockerfiles-changed.outputs.python_changed == 'true'}}
-    uses: ./.github/workflows/docker-test.yml
-    with:
-      directory: ottr_python
-      tag: jhudsl/ottr_python
-    secrets:
-      GH_PAT: ${{ secrets.GH_PAT }}
-
-  build-quarto:
-    name: Build quarto ottr image
-    needs: dockerfiles-changed
-    if: ${{needs.dockerfiles-changed.outputs.quarto_changed == 'true'}}
-    uses: ./.github/workflows/docker-test.yml
-    with:
-      directory: ottr_quarto
-      tag: jhudsl/ottr_quarto
-    secrets:
-      GH_PAT: ${{ secrets.GH_PAT }}
+          directory: ${{ matrix.config.dir }}
+          tag: ${{ matrix.config.name }}
+          dockerhubpush: false
+        secrets:
+          GH_PAT: ${{ secrets.GH_PAT }}

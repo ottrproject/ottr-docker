@@ -1,4 +1,4 @@
-# Candace Savonen May 2022
+# Candace Savonen Jan 2025
 
 name: Pull Request
 
@@ -17,6 +17,9 @@ jobs:
       matrix:
         config:
           - {dir: base_ottr,   name: 'jhudsl/base_ottr'}
+          - {dir: ottrpal,   name: 'jhudsl/ottrpal'}
+          - {dir: bioconductor,   name: 'jhudsl/ottr_bioconductor'}
+          - {dir: ottr_website,   name: 'jhudsl/ottr_website'}
 
     steps:
       - name: Checkout
