@@ -2,7 +2,6 @@
 
 name: Build Docker Image
 description: "Build and push from a dockerfile in the repository"
-on:
 inputs:
   directory:
     description: 'What's the file path to this Dockerfile's folder in this repo'
