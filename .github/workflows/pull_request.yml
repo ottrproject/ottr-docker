@@ -11,6 +11,7 @@ jobs:
   dockerfile-check:
     name: Test changed Dockerfile - ${{ matrix.config.dir }}
     runs-on: ubuntu-latest
+    secrets: inherit
     strategy:
       fail-fast: false
       matrix:
@@ -43,4 +44,3 @@ jobs:
           directory: ${{ matrix.config.dir }}
           tag: ${{ matrix.config.name }}
           dockerhubpush: false
-        secrets: inherit
