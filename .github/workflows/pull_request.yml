@@ -33,7 +33,9 @@ jobs:
         with:
           files: ${{ matrix.config.dir }}/*
 
-      - run: echo ${{steps.image_name.outputs.any_changed}}
+      - run: |
+          echo ${{steps.image_name.outputs.any_changed}}
+          echo ${{ matrix.config.dir }}
 
       - name: Build it
         uses: ./.github/workflows/docker-test.yml
