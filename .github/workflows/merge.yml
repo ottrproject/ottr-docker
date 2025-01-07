@@ -20,7 +20,8 @@ jobs:
           - {dir: ottrpal,   name: 'jhudsl/ottrpal'}
           - {dir: bioconductor,   name: 'jhudsl/ottr_bioconductor'}
           - {dir: ottr_website,   name: 'jhudsl/ottr_website'}
-
+# NEW IMAGES HERE: #
+#######   - {dir: directory_path,   name: 'name its called on dockerhub'}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -41,7 +42,7 @@ jobs:
         with:
           tag: ${{ matrix.config.name }}
           dockerhubpush: true
-        secrets:
-          GH_PAT: ${{ secrets.GH_PAT }}
-          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+          secrets:
+            GH_PAT: ${{ secrets.GH_PAT }}
+            DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+            DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
