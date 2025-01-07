@@ -36,9 +36,16 @@ jobs:
 
       - run: echo ${{steps.image_name.outputs.any_changed}}
 
-      - name: Build it
-        uses: ./.github/workflows/docker-test.yml
-        if: ${{steps.image_name.outputs.any_changed == 'true'}}
-        with:
-          tag: ${{ matrix.config.name }}
-          dockerhubpush: true
+  build-it:
+    name: Build it
+    needs: dockerfile-check
+    if: ${{needs.dockerfile-check.outputs.any_changed == 'true'}}
+    uses: jhudsl/ottr-docker/.github/workflows/docker-test.yml@main
+    with:
+      directory: ${{ matrix.config.dir }}
+      tag: ${{ matrix.config.name }}
+      dockerhubpush: true
+    secrets:
+      GH_PAT: ${{ secrets.GH_PAT }}
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}

@@ -49,3 +49,5 @@ jobs:
       directory: ${{ matrix.config.dir }}
       tag: ${{ matrix.config.name }}
       dockerhubpush: false
+    secrets:
+      GH_PAT: ${{ secrets.GH_PAT }}
