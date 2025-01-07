@@ -33,8 +33,8 @@ jobs:
       - run: echo ${{steps.image_name.outputs.any_changed}}
 
       - name: Build it
-        if: ${{steps.image_name.outputs.any_changed == 'true'}}
         uses: ./.github/workflows/docker-test.yml
+        if: ${{steps.image_name.outputs.any_changed == 'true'}}
         with:
           tag: ${{ matrix.config.name }}
           dockerhubpush: true
