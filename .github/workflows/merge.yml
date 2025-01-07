@@ -35,15 +35,31 @@ jobs:
         with:
           files: bioconductor/*
 
+      - name: Get specific changed files
+        id: python
+        uses: tj-actions/changed-files@v14.5
+        with:
+          files: python/*
+
+      - name: Get specific changed files
+        id: jupyter
+        uses: tj-actions/changed-files@v14.5
+        with:
+          files: jupyter/*
+
       - run: |
           echo ${{steps.base_ottr.outputs.any_changed}}
           echo ${{steps.ottrpal.outputs.any_changed}}
           echo ${{steps.bioconductor.outputs.any_changed}}
+          echo ${{steps.python.outputs.any_changed}}
+          echo ${{steps.jupyter.outputs.any_changed}}
 
     outputs:
       base_ottr_changed: ${{steps.base_ottr.outputs.any_changed}}
       ottrpal_changed: ${{steps.ottrpal.outputs.any_changed}}
       bioconductor_changed: ${{steps.bioconductor.outputs.any_changed}}
+      python_changed: ${{steps.python.outputs.any_changed}}
+      quarto_changed: ${{steps.jupyter.outputs.any_changed}}
 
   build-base:
     name: Build base ottr image
@@ -87,14 +103,14 @@ jobs:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
-  build-quarto:
+  build-jupyter:
     name: Build quarto image
     needs: dockerfiles-changed
-    if: ${{needs.dockerfiles-changed.outputs.quarto_changed == 'true'}}
+    if: ${{needs.dockerfiles-changed.outputs.jupyter_changed == 'true'}}
     uses: ./.github/workflows/docker-test.yml
     with:
-      directory: ottr_quarto
-      tag: jhudsl/ottr_quarto
+      directory: ottr_jupyter
+      tag: jhudsl/ottr_jupyter
       dockerhubpush: true
     secrets:
       GH_PAT: ${{ secrets.GH_PAT }}
