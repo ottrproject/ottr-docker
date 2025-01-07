@@ -17,12 +17,10 @@ on:
         default: 'false'
         type: string
     secrets:
-      GH_PAT:
+      GH_PAT: ${{ secrets.GH_PAT }}
         required: true
-      DOCKERHUB_USERNAME:
-        required: false
-      DOCKERHUB_TOKEN:
-        required: false
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
 defaults:
   run:
