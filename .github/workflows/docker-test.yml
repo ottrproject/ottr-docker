@@ -16,7 +16,13 @@ on:
         required: false
         default: 'false'
         type: string
-    secrets: inherit
+    secrets:
+      GH_PAT:
+        required: true
+      DOCKERHUB_USERNAME:
+        required: false
+      DOCKERHUB_TOKEN:
+        required: false
 
 defaults:
   run:
