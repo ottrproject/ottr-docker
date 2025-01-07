@@ -38,7 +38,7 @@ jobs:
           echo ${{ matrix.config.dir }}
 
       - name: Build it
-        uses: ./.github/workflows/docker-test.yml
+        uses: .github/workflows/docker-test.yml
         if: ${{steps.image_name.outputs.any_changed == 'true'}}
         with:
           directory: ${{ matrix.config.dir }}
