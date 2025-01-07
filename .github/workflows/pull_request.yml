@@ -38,7 +38,7 @@ jobs:
 
       - name: Docker build
         if: ${{ steps.image_name.outputs.any_changed == 'true'}}
-        uses: ./.github/workflows/docker-test.yml
+        uses: jhudsl/ottr-docker/.github/workflows/docker-test.yml
         with:
           directory: ${{ matrix.config.dir }}
           tag: ${{ matrix.config.name }}
