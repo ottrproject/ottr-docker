@@ -1,4 +1,4 @@
-# Candace Savonen Apr 2022
+# Candace Savonen Jan 2025
 
 name: Build Docker Image
 
@@ -16,16 +16,8 @@ on:
         required: false
         default: 'false'
         type: string
-    secrets:
-      GH_PAT:
-        required: true
-        default: ${{ secrets.GH_PAT }}
-      DOCKERHUB_USERNAME:
-        required: false
-        default: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN:
-        required: false
-        default: ${{ secrets.DOCKERHUB_TOKEN }}
+    secrets: inherit
+
 defaults:
   run:
     working-directory: ./
