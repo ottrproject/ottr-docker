@@ -34,13 +34,18 @@ jobs:
           files: ${{ matrix.config.dir }}/*
 
       - run: |
-          echo ${{steps.image_name.outputs.any_changed}}
+          echo ${{ steps.image_name.outputs.any_changed }}
           echo ${{ matrix.config.dir }}
 
-      - name: Build it
-        uses: jhudsl/ottr-reports/.github/workflows/docker-test.yml@main
-        if: ${{steps.image_name.outputs.any_changed == 'true'}}
-        with:
-          directory: ${{ matrix.config.dir }}
-          tag: ${{ matrix.config.name }}
-          dockerhubpush: false
+    outputs:
+      any_changed: "${{ steps.image_name.outputs.any_changed }}"
+
+  build-it:
+    name: Build it
+    needs: dockerfiles-check
+    if: ${{needs.dockerfiles-check.outputs.any_changed == 'true'}}
+    uses: jhudsl/ottr-reports/.github/workflows/docker-test.yml@main
+    with:
+      directory: ${{ matrix.config.dir }}
+      tag: ${{ matrix.config.name }}
+      dockerhubpush: false
