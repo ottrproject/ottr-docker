@@ -16,13 +16,6 @@ on:
         required: false
         default: 'false'
         type: string
-    secrets:
-      GH_PAT:
-        required: false
-      DOCKERHUB_USERNAME:
-        required: false
-      DOCKERHUB_TOKEN:
-        required: false
 
 defaults:
   run:
