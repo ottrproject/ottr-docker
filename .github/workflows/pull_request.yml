@@ -43,3 +43,4 @@ jobs:
           directory: ${{ matrix.config.dir }}
           tag: ${{ matrix.config.name }}
           dockerhubpush: false
+        secrets: inherit
