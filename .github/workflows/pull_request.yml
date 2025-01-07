@@ -11,7 +11,6 @@ jobs:
   dockerfile-check:
     name: Test changed Dockerfile - ${{ matrix.config.dir }}
     runs-on: ubuntu-latest
-
     strategy:
       fail-fast: false
       matrix:
@@ -36,14 +35,23 @@ jobs:
       - run: |
           echo ${{ steps.image_name.outputs.any_changed }}
           echo ${{ matrix.config.dir }}
-
-    outputs:
-      any_changed: "${{ steps.image_name.outputs.any_changed }}"
+          echo "${{ matrix.config.dir }}_changed=${{ steps.image_name.outputs.any_changed }}" >> $GITHUB_OUTPUT
 
   build-it:
+    name: Build image - ${{ matrix.config.dir }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - {dir: base_ottr, name: 'jhudsl/base_ottr'}
+          - {dir: ottrpal, name: 'jhudsl/ottrpal'}
+          - {dir: bioconductor, name: 'jhudsl/ottr_bioconductor'}
+          - {dir: ottr_website, name: 'jhudsl/ottr_website'}
+
     name: Build it
     needs: dockerfile-check
-    if: ${{needs.dockerfile-check.outputs.any_changed == 'true'}}
+    if: ${{needs.dockerfile-check.outputs.${{ matrix.config.dir }}_changed == 'true'}}
     uses: jhudsl/ottr-docker/.github/workflows/docker-test.yml@main
     with:
       directory: ${{ matrix.config.dir }}
