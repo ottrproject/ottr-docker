@@ -30,14 +30,10 @@ jobs:
         with:
           files: ${{ matrix.config.dir }}/*
 
-      - run: |
-          echo ${{steps.image_name.outputs.any_changed}}
+      - run: echo ${{steps.image_name.outputs.any_changed}}
 
-    outputs:
-      image_name_changed: ${{steps.image_name.outputs.any_changed}}
-
-      - name: Get specific changed files
-        if: ${{needs.dockerfiles-changed.outputs.image_name_changed == 'true'}}
+      - name: Build it
+        if: ${{steps.image_name.outputs.any_changed == 'true'}}
         uses: ./.github/workflows/docker-test.yml
         with:
           tag: ${{ matrix.config.name }}
