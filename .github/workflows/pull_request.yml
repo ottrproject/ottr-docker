@@ -39,6 +39,8 @@ jobs:
 
   build-it:
     name: Build image - ${{ matrix.config.dir }}
+    needs: dockerfile-check
+    if: ${{needs.dockerfile-check.outputs.${{ matrix.config.dir }}_changed == 'true'}}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -49,9 +51,6 @@ jobs:
           - {dir: bioconductor, name: 'jhudsl/ottr_bioconductor'}
           - {dir: ottr_website, name: 'jhudsl/ottr_website'}
 
-    name: Build it
-    needs: dockerfile-check
-    if: ${{needs.dockerfile-check.outputs.${{ matrix.config.dir }}_changed == 'true'}}
     uses: jhudsl/ottr-docker/.github/workflows/docker-test.yml@main
     with:
       directory: ${{ matrix.config.dir }}
