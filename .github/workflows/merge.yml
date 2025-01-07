@@ -36,14 +36,13 @@ jobs:
     outputs:
       image_name_changed: ${{steps.image_name.outputs.any_changed}}
 
-    name: Build ${{ matrix.config.dir }} image
-    if: ${{needs.dockerfiles-changed.outputs.image_name_changed == 'true'}}
-    uses: ./.github/workflows/docker-test.yml
-    with:
-      directory: image_name
-      tag: ${{ matrix.config.name }}
-      dockerhubpush: true
-    secrets:
-      GH_PAT: ${{ secrets.GH_PAT }}
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Get specific changed files
+        if: ${{needs.dockerfiles-changed.outputs.image_name_changed == 'true'}}
+        uses: ./.github/workflows/docker-test.yml
+        with:
+          tag: ${{ matrix.config.name }}
+          dockerhubpush: true
+        secrets:
+          GH_PAT: ${{ secrets.GH_PAT }}
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
