@@ -22,14 +22,16 @@ on:
 jobs:
 
   build-it:
+    name: Docker Build - ${{ inputs.directory }}
+    runs-on: ubuntu-latest
     steps:
       - name: Docker build
         if: ${{ steps.image_name.outputs.any_changed == 'true'}}
         uses: ./.github/workflows/
         with:
-          directory: ${{ matrix.config.dir }}
-          tag: ${{ matrix.config.name }}
-          dockerhubpush: false
+          directory: ${{ inputs.directory }}
+          tag: ${{ inputs.tag }}
+          dockerhubpush: ${{ inputs.dockerhubpush }}
           token: ${{ secrets.GH_PAT }}
           dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
           dockerhub_token: ${{ secrets.DOCKERHUB_TOKEN }}
