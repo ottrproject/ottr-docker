@@ -1,4 +1,4 @@
-# Candace Savonen May 2022
+# Candace Savonen Jan 2025
 
 name: Pull Request
 
@@ -8,9 +8,23 @@ on:
 
 jobs:
 
-  dockerfiles-changed:
-    name: Detect changed Dockerfiles
+  dockerfile-check:
+    name: Detect changed Dockerfile - ${{ matrix.config.dir }}
     runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - {dir: base_ottr,   name: 'jhudsl/base_ottr'}
+          - {dir: bioconductor,   name: 'jhudsl/ottr_bioconductor'}
+          - {dir: ottrpal,   name: 'jhudsl/ottrpal'}
+          - {dir: ottr_anvil_poll, name: 'jhudsl/anvil-poll-2024'}
+          - {dir: ottr_datatables, name: 'jhudsl/ottr_datatables'}
+          - {dir: ottr_website,   name: 'jhudsl/ottr_website'}
+          - {dir: ottr_jupyter,   name: 'jhudsl/ottr_jupyter'}
+# NEW IMAGES HERE: #
+#######   - {dir: directory_path,   name: 'name its called on dockerhub'}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -18,101 +32,20 @@ jobs:
           fetch-depth: 0
 
       - name: Get specific changed files
-        id: base_ottr
+        id: image_name
         uses: tj-actions/changed-files@v14.5
         with:
-          files: base_ottr/*
+          files: ${{ matrix.config.dir }}/*
 
-      - name: Get specific changed files
-        id: ottrpal
-        uses: tj-actions/changed-files@v14.5
+      - run: echo ${{steps.image_name.outputs.any_changed}}
+
+      - name: Docker build
+        if: ${{ steps.image_name.outputs.any_changed == 'true'}}
+        uses: ./.github/workflows/
         with:
-          files: ottrpal/*
-
-      - name: Get specific changed files
-        id: bioconductor
-        uses: tj-actions/changed-files@v14.5
-        with:
-          files: bioconductor/*
-
-      - name: Get specific changed files
-        id: python
-        uses: tj-actions/changed-files@v14.5
-        with:
-          files: python/*
-
-      - name: Get specific changed files
-        id: jupyter
-        uses: tj-actions/changed-files@v14.5
-        with:
-          files: jupyter/*
-
-      - run: |
-          echo ${{steps.base_ottr.outputs.any_changed}}
-          echo ${{steps.ottrpal.outputs.any_changed}}
-          echo ${{steps.bioconductor.outputs.any_changed}}
-          echo ${{steps.python.outputs.any_changed}}
-          echo ${{steps.jupyter.outputs.any_changed}}
-
-    outputs:
-      base_ottr_changed: ${{steps.base_ottr.outputs.any_changed}}
-      ottrpal_changed: ${{steps.ottrpal.outputs.any_changed}}
-      bioconductor_changed: ${{steps.bioconductor.outputs.any_changed}}
-      python_changed: ${{steps.python.outputs.any_changed}}
-      quarto_changed: ${{steps.jupyter.outputs.any_changed}}
-
-  build-base:
-    name: Build base ottr image
-    needs: dockerfiles-changed
-    if: ${{needs.dockerfiles-changed.outputs.base_ottr_changed == 'true'}}
-    uses: ./.github/workflows/docker-test.yml
-    with:
-      directory: base_ottr
-      tag: jhudsl/course_template
-      dockerhubpush: true
-    secrets:
-      GH_PAT: ${{ secrets.GH_PAT }}
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-
-  build-ottrpal:
-    name: Build ottrpal image
-    needs: dockerfiles-changed
-    if: ${{needs.dockerfiles-changed.outputs.ottrpal_changed == 'true'}}
-    uses: ./.github/workflows/docker-test.yml
-    with:
-      directory: ottrpal
-      tag: jhudsl/ottrpal
-      dockerhubpush: true
-    secrets:
-      GH_PAT: ${{ secrets.GH_PAT }}
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-
-  build-bioconductor:
-    name: Build bioconductor image
-    needs: dockerfiles-changed
-    if: ${{needs.dockerfiles-changed.outputs.bioconductor_changed == 'true'}}
-    uses: ./.github/workflows/docker-test.yml
-    with:
-      directory: bioconductor
-      tag: jhudsl/ottr_bioconductor
-      dockerhubpush: true
-    secrets:
-      GH_PAT: ${{ secrets.GH_PAT }}
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-
-  build-jupyter:
-    name: Build quarto image
-    needs: dockerfiles-changed
-    if: ${{needs.dockerfiles-changed.outputs.jupyter_changed == 'true'}}
-    uses: ./.github/workflows/docker-test.yml
-    with:
-      directory: ottr_jupyter
-      tag: jhudsl/ottr_jupyter
-      dockerhubpush: true
-    secrets:
-      GH_PAT: ${{ secrets.GH_PAT }}
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+          directory: ${{ matrix.config.dir }}
+          tag: ${{ matrix.config.name }}
+          dockerhubpush: false
+          token: ${{ secrets.GH_PAT }}
+          dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
+          dockerhub_token: ${{ secrets.DOCKERHUB_TOKEN }}

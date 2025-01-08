@@ -46,9 +46,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN Rscript -e "remove.packages('rlang')"
 
-RUN curl -LO https://quarto.org/download/latest/quarto-linux-amd64.deb
-RUN gdebi --non-interactive quarto-linux-amd64.deb
-
 # Commonly used R packages
 RUN Rscript -e  "options(warn = 2);install.packages( \
     c('rlang', \
@@ -79,6 +76,9 @@ RUN Rscript -e  "options(warn = 2);install.packages( \
       'testthat', \
       'webshot2'), \
       repos = 'https://cloud.r-project.org/')"
+
+RUN curl -LO https://quarto.org/download/latest/quarto-linux-amd64.deb
+RUN gdebi --non-interactive quarto-linux-amd64.deb
 
 # cow needs this dependency:
 RUN Rscript -e  "devtools::install_version('gitcreds', version = '0.1.1', repos = 'http://cran.us.r-project.org')"
