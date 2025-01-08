@@ -19,7 +19,8 @@ jobs:
           - {dir: ottrpal,   name: 'jhudsl/ottrpal'}
           - {dir: bioconductor,   name: 'jhudsl/ottr_bioconductor'}
           - {dir: ottr_website,   name: 'jhudsl/ottr_website'}
-
+# NEW IMAGES HERE: #
+#######   - {dir: directory_path,   name: 'name its called on dockerhub'}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
