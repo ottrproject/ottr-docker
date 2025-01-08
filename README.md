@@ -4,9 +4,7 @@ This repository stores the Dockerfiles and associated files for images that can 
 
 ## How to use
 
-In your OTTR repositories, you can specify a different docker image for rendering in the `config_automation.yml` file.
-
-Currently the only supported docker images for rendering purposes are `base_ottr` and `bioconductor`.
+In your OTTR repositories, you can specify a different docker image for rendering in the `config_automation.yml` file. For the purposes of rendering different courses, if you have code that needs to be run, you may require a custom Docker image so that you have the packages being called in the code. 
 
 Read more about docker customization on [ottrproject.org](https://www.ottrproject.org/customize-docker.html).
 
