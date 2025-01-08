@@ -22,6 +22,7 @@ jobs:
           - {dir: ottr_anvil_poll, name: 'jhudsl/anvil-poll-2024'}
           - {dir: ottr_datatables, name: 'jhudsl/ottr_datatables'}
           - {dir: ottr_website,   name: 'jhudsl/ottr_website'}
+          - {dir: ottr_jupyter,   name: 'jhudsl/ottr_jupyter'}
 # NEW IMAGES HERE: #
 #######   - {dir: directory_path,   name: 'name its called on dockerhub'}
     steps:
