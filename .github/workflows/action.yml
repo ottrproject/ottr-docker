@@ -7,7 +7,7 @@ inputs:
     required: true
     type: string
   tag:
-    description: 'What is this called on Dockerhub? e.g. jhudslbase_ottr'
+    description: 'What is this called on Dockerhub? e.g. jhudsl/base_ottr'
     required: true
     type: string
   dockerhubpush:
