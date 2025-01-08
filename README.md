@@ -1,4 +1,4 @@
-# ottr_docker
+# OTTR Docker library
 
 This repository stores the Dockerfiles and associated files for images that can be used by OTTR for rendering (or other items underneath the hood). 
 
