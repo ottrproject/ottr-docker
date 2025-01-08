@@ -26,7 +26,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Docker build
-        if: ${{ steps.image_name.outputs.any_changed == 'true'}}
         uses: ./.github/workflows/
         with:
           directory: ${{ inputs.directory }}
