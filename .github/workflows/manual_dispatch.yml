@@ -23,12 +23,11 @@ jobs:
 
   build-it:
     name: Build docker image on command
-    uses: ./.github/workflows/docker-test.yml
+    uses: ./.github/workflows/
     with:
       directory: ${{github.event.inputs.directory}}
       tag: ${{github.event.inputs.tag}}
       dockerhubpush: ${{github.event.inputs.dockerhubpush}}
-    secrets:
-      GH_PAT: ${{ secrets.GH_PAT }}
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+      token: ${{ secrets.GH_PAT }}
+      dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
+      dockerhub_token: ${{ secrets.DOCKERHUB_TOKEN }}
