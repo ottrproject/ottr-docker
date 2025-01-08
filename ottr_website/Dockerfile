@@ -3,6 +3,11 @@
 FROM jhudsl/base_ottr:main
 LABEL maintainer="cansav09@gmail.com"
 
+RUN Rscript -e "install.packages('BiocManager', repos = 'https://packagemanager.rstudio.com/all/__linux__/centos7/latest')" \
+
+## Install ggpubr dependency
+RUN BiocManager::install("nloptr")
+
 # Install googlesheets4 and plotting packages
 RUN Rscript -e  "options(warn = 2);install.packages( \
     c('ggpubr', 'patchwork', 'broom', 'googlesheets4'), \

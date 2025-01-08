@@ -16,8 +16,10 @@ jobs:
       matrix:
         config:
           - {dir: base_ottr,   name: 'jhudsl/base_ottr'}
-          - {dir: ottrpal,   name: 'jhudsl/ottrpal'}
           - {dir: bioconductor,   name: 'jhudsl/ottr_bioconductor'}
+          - {dir: ottrpal,   name: 'jhudsl/ottrpal'}
+          - {dir: ottr_anvil_poll, name: 'jhudsl/anvil-poll-2024'}
+          - {dir: ottr_datatables, name: 'jhudsl/ottr_datatables'}
           - {dir: ottr_website,   name: 'jhudsl/ottr_website'}
 # NEW IMAGES HERE: #
 #######   - {dir: directory_path,   name: 'name its called on dockerhub'}
