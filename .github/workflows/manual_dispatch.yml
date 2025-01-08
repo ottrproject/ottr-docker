@@ -22,12 +22,14 @@ on:
 jobs:
 
   build-it:
-    name: Build docker image on command
-    uses: ./.github/workflows/
-    with:
-      directory: ${{github.event.inputs.directory}}
-      tag: ${{github.event.inputs.tag}}
-      dockerhubpush: ${{github.event.inputs.dockerhubpush}}
-      token: ${{ secrets.GH_PAT }}
-      dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
-      dockerhub_token: ${{ secrets.DOCKERHUB_TOKEN }}
+    steps:
+      - name: Docker build
+        if: ${{ steps.image_name.outputs.any_changed == 'true'}}
+        uses: ./.github/workflows/
+        with:
+          directory: ${{ matrix.config.dir }}
+          tag: ${{ matrix.config.name }}
+          dockerhubpush: false
+          token: ${{ secrets.GH_PAT }}
+          dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
+          dockerhub_token: ${{ secrets.DOCKERHUB_TOKEN }}
