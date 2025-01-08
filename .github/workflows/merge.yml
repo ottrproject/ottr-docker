@@ -5,7 +5,8 @@ name: Pull Request
 on:
   push:
     branches: [ main ]
-    paths: !*.md
+    path:
+      - */Dockerfile
 
 jobs:
 
