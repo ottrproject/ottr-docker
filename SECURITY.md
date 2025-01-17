@@ -11,4 +11,4 @@ currently being supported with security updates.
 
 ## Reporting a Vulnerability
 
-Please report vulnerabilties to csavonen@fredhutch.orh
+Please report vulnerabilties to csavonen@fredhutch.org
