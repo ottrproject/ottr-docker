@@ -1,12 +1,10 @@
-FROM jhudsl/base_ottr
+FROM jhudsl/base_ottr:dev
 LABEL maintainer="cansav09@gmail.com"
 
-RUN installGithub.r \
-  jhudsl/ottrpal \
-  jhudsl/cow
+WORKDIR /app
 
+COPY entrypoint.sh .
 
-ARG CHECK_TYPE
-ENV CHECK_TYPE=${INPUT_CHECK_TYPE}
+RUN chmod +x entrypoint.sh
 
-ENTRYPOINT ["Rscript -e 'ottrpal::check(check_type == ${INPUT_CHECK_TYPE})'"]
+ENTRYPOINT ["/app/entrypoint.sh"]
