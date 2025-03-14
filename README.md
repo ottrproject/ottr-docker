@@ -4,7 +4,7 @@ This repository stores the Dockerfiles and associated files for images that can 
 
 ## How to use
 
-In your OTTR repositories, you can specify a different docker image for rendering in the `config_automation.yml` file. For the purposes of rendering different courses, if you have code that needs to be run, you may require a custom Docker image so that you have the packages being called in the code. 
+In your OTTR repositories, you can specify a different docker image for rendering in the `config_automation.yml` file. For the purposes of rendering different courses, if you have code that needs to be run, you may require a custom Docker image so that you have the packages being called in the code.
 
 Read more about docker customization on [ottrproject.org](https://www.ottrproject.org/customize-docker.html).
 
@@ -40,8 +40,9 @@ For example it should look something like:
 - {dir: base_ottr,   name: 'jhudsl/base_ottr'}
 ```
 Where `base_ottr` is the path to the directory where the Dockerfile is stored inside the folder named `base_ottr` and `jhudsl/base_ottr` is what it is called on Dockerhub.  
-5. Develop your Dockerfile as your normally would but with each push to your open pull request `pull_request.yml` will attempt to rebuild it to test it.  
-6. When it successfully builds and it has what you want then you can have it reviewed and merged.  
-7. Upon merging `merge.yml` will rebuild the image one more time and then push to Dockerhub (if it has proper credentials to do so). Dockerhub username and Dockerhub token stored in this repository as GitHub secrets needs to have push access to the image on Dockerhub.  
+5. Repeat steps 3-4 for the file `merge.yml`.
+6. Develop your Dockerfile as your normally would but with each push to your open pull request `pull_request.yml` will attempt to rebuild it to test it.  
+7. When it successfully builds and it has what you want then you can have it reviewed and merged.  
+8. Upon merging `merge.yml` will rebuild the image one more time and then push to Dockerhub (if it has proper credentials to do so). Dockerhub username and Dockerhub token stored in this repository as GitHub secrets needs to have push access to the image on Dockerhub.  
 
 For more information on any of this ask @cansavvy.
