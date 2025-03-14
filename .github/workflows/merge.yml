@@ -25,6 +25,7 @@ jobs:
           - {dir: ottr_datatables, name: 'jhudsl/ottr_datatables'}
           - {dir: ottr_website,   name: 'jhudsl/ottr_website'}
           - {dir: ottr_jupyter,   name: 'jhudsl/ottr_jupyter'}
+          - {dir: ottr_itn_workshop, name: 'jhudsl/ottr_itn_workshop'}
 # NEW IMAGES HERE: #
 #######   - {dir: directory_path,   name: 'name its called on dockerhub'}
     steps:
