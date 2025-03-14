@@ -1,12 +1,11 @@
 # Candace Savonen Jan 2025
 
-name: Pull Request
+name: Merge to main action
 
 on:
   push:
     branches: [ main ]
-    path:
-      - */Dockerfile
+    path: */Dockerfile
 
 jobs:
 
