@@ -5,7 +5,8 @@ name: Merge to main action
 on:
   push:
     branches: [ main ]
-    path: */Dockerfile
+    paths:
+      - '**/Dockerfile'
 
 jobs:
 
