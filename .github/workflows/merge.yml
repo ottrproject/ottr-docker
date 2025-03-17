@@ -36,7 +36,7 @@ jobs:
 
       - name: Get specific changed files
         id: image_name
-        uses: tj-actions/changed-files@v14.5
+        uses: tj-actions/changed-files@v44.5.1
         with:
           files: ${{ matrix.config.dir }}/*
 
