@@ -4,3 +4,8 @@ LABEL maintainer="cansav09@gmail.com"
 # Install jupyter
 RUN pip3 install \
     jupyter==1.1.1
+
+RUN Rscript -e  "options(warn = 2);install.packages('quarto')"
+
+# Set final workdir for commands
+WORKDIR /home/rstudio

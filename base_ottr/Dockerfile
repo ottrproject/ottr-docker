@@ -5,14 +5,16 @@ LABEL maintainer="cansav09@gmail.com"
 WORKDIR /rocker-build/
 
 # Install apt-getable packages to start
-RUN apt-get update && apt-get install -y --no-install-recommends apt-utils dialog
+RUN apt-get update && apt-get install -y --no-install-recommends --fix-missing apt-utils dialog
 RUN apt-get install -y --no-install-recommends \
     libxt6 \
     libpoppler-cpp-dev \
     vim \
     libglpk40 \
     curl \
-    gpg
+    gpg \
+    nodejs \
+    npm
 
 # Install gh
 RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | gpg --dearmor -o /usr/share/keyrings/githubcli-archive-keyring.gpg;
@@ -92,5 +94,8 @@ WORKDIR /home/rstudio
 
 RUN wget https://downloads.vivaldi.com/stable/vivaldi-stable_5.5.2805.35-1_amd64.deb
 RUN apt-get update && apt-get install -y ./vivaldi-stable_5.5.2805.35-1_amd64.deb && rm -rf /var/lib/apt/lists/*
+
+## Need markdown-lint-cli2
+RUN npm install markdownlint-cli2 --global
 
 RUN echo CHROMOTE_CHROME=/usr/bin/vivaldi >> .Renviron
