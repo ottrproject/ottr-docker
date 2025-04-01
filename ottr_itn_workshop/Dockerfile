@@ -12,3 +12,11 @@ RUN Rscript -e "options(warn = 2);BiocManager::install('nloptr')"
 RUN Rscript -e  "options(warn = 2);install.packages( \
     c('sqldf', 'survival', 'tidyverse', 'ggplot2', 'survminer'), \
     repos = 'https://cloud.r-project.org/')"
+
+## Install devtools dependency
+RUN Rscript -e "options(warn = 2);install.packages( \
+    c('devtools'), \
+    repos = 'https://cloud.r-project.org/')"
+
+# Install spatialGE
+RUN Rscript -e "options(warn = 2);devtools::install_github('fridleylab/spatialGE')" 
