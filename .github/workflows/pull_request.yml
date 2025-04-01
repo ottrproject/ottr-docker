@@ -27,13 +27,13 @@ jobs:
 #######   - {dir: directory_path,   name: 'name its called on dockerhub'}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Get specific changed files
         id: image_name
-        uses: tj-actions/changed-files@v14.5
+        uses: tj-actions/changed-files@v46.0.3
         with:
           files: ${{ matrix.config.dir }}/*
 
