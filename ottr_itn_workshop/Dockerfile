@@ -18,7 +18,7 @@ RUN Rscript -e "options(warn = 2);install.packages( \
     c('devtools'), \
     repos = 'https://cloud.r-project.org/')"
 
-RUN Rscript -e 'options(warn = 2);install.packages("fftwtools")'
+RUN apt-get -y --no-install-recommends install r-cran-fftwtool
 
 ## Install other spatialGE dependencies
 RUN Rscript -e "options(warn = 2);BiocManager::install( \
