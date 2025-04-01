@@ -20,7 +20,7 @@ RUN Rscript -e "options(warn = 2);install.packages( \
 
 RUN Rscript -e "options(warn = 2);install.packages( \
     c('fftwtools'), \
-    lib = "/usr/local/lib/R/site-library/")"
+    lib = '/usr/local/lib/R/site-library/')"
 
 ## Install other spatialGE dependencies
 RUN Rscript -e "options(warn = 2);BiocManager::install( \
