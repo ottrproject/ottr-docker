@@ -18,6 +18,8 @@ RUN Rscript -e "options(warn = 2);install.packages( \
     c('devtools'), \
     repos = 'https://cloud.r-project.org/')"
 
+RUN apt-get -y --no-install-recommends install libfftw3-dev
+
 ## Install other spatialGE dependencies
 RUN Rscript -e "options(warn = 2);BiocManager::install( \
     c('GSVA', 'EBImage', 'DelayedMatrixStats', 'DelayedArray', 'ComplexHeatmap', 'BiocParallel'))"
