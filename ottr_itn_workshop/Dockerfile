@@ -18,5 +18,9 @@ RUN Rscript -e "options(warn = 2);install.packages( \
     c('devtools'), \
     repos = 'https://cloud.r-project.org/')"
 
+## Install other spatialGE dependencies
+RUN Rscript -e "options(warn = 2);BiocManager::install( \
+    c('GSVA', 'EBImage', 'DelayedMatrixStats', 'DelayedArray', 'ComplexHeatmap', 'BiocParallel'))"
+
 # Install spatialGE
 RUN Rscript -e "options(warn = 2);devtools::install_github('FridleyLab/spatialGE')"
