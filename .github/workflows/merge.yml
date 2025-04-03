@@ -1,12 +1,12 @@
 # Candace Savonen Jan 2025
 
-name: Pull Request
+name: Merge to main action
 
 on:
   push:
     branches: [ main ]
-    path:
-      - */Dockerfile
+    paths:
+      - '**/Dockerfile'
 
 jobs:
 
@@ -25,6 +25,7 @@ jobs:
           - {dir: ottr_datatables, name: 'jhudsl/ottr_datatables'}
           - {dir: ottr_website,   name: 'jhudsl/ottr_website'}
           - {dir: ottr_jupyter,   name: 'jhudsl/ottr_jupyter'}
+          - {dir: ottr_itn_workshop, name: 'jhudsl/ottr_itn_workshop'}
 # NEW IMAGES HERE: #
 #######   - {dir: directory_path,   name: 'name its called on dockerhub'}
     steps:
@@ -35,7 +36,7 @@ jobs:
 
       - name: Get specific changed files
         id: image_name
-        uses: tj-actions/changed-files@v14.5
+        uses: tj-actions/changed-files@v46.0.1
         with:
           files: ${{ matrix.config.dir }}/*
 
