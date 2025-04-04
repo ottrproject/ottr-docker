@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 if [ "$1" = "rmd" ]; then
   Rscript -e "bookdown::render_book('index.Rmd', output_format = 'all')"
 elif [ "$1" = "quarto" ] || [ "$1" = "quarto_web" ]; then

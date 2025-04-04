@@ -1,4 +1,5 @@
-# Candace Savonen Jan 2025
+# Candace Savonen 2021
+# Updated May 2024
 
 name: Pull Request
 
@@ -8,46 +9,132 @@ on:
 
 jobs:
 
-  dockerfile-check:
-    name: Test changed Dockerfile - ${{ matrix.config.dir }}
+  yaml-check:
+    name: Load user automation choices
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        config:
-          - {dir: base_ottr,   name: 'jhudsl/base_ottr'}
-          - {dir: bioconductor,   name: 'jhudsl/ottr_bioconductor'}
-          - {dir: ottrpal,   name: 'jhudsl/ottrpal'}
-          - {dir: ottr_anvil_poll, name: 'jhudsl/anvil-poll-2024'}
-          - {dir: ottr_datatables, name: 'jhudsl/ottr_datatables'}
-          - {dir: ottr_website,   name: 'jhudsl/ottr_website'}
-          - {dir: ottr_jupyter,   name: 'jhudsl/ottr_jupyter'}
-          - {dir: ottr_itn_workshop, name: 'jhudsl/ottr_itn_workshop'}
-# NEW IMAGES HERE: #
-#######   - {dir: directory_path,   name: 'name its called on dockerhub'}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Get specific changed files
-        id: image_name
-        uses: tj-actions/changed-files@vv46.0.1
+        # Use the yaml-env-action action.
+      - name: Load environment from YAML
+        uses: doughepi/yaml-env-action@v1.0.0
         with:
-          files: ${{ matrix.config.dir }}/*
+            files: config_automation.yml # Pass a space-separated list of configuration files. Rightmost files take precedence.
 
-      - run: |
-          echo ${{ steps.image_name.outputs.any_changed }}
-          echo ${{ matrix.config.dir }}
+      # Delete the branch if this has been run before
+      - name: Delete branch locally and remotely
+        run: git push origin --delete preview-${{ github.event.pull_request.number }} || echo "No branch to delete"
 
-      - name: Docker build
-        if: ${{ steps.image_name.outputs.any_changed == 'true'}}
-        uses: ./.github/workflows/
+      # Make the branch fresh
+      - name: Make the branch fresh
+        run: |
+          git config --global --add safe.directory $GITHUB_WORKSPACE
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+          branch_name='preview-${{ github.event.pull_request.number }}'
+          echo branch doesnt exist
+          git checkout -b $branch_name || echo branch exists
+          git push --set-upstream origin $branch_name || echo branch exists remotely
+        shell: bash
+
+
+    outputs:
+      toggle_website: "${{ env.RENDER_WEBSITE }}"
+      toggle_spell_check: "${{ env.SPELL_CHECK }}"
+      toggle_style_code: "${{ env.STYLE_CODE }}"
+      toggle_url_check: "${{ env.URL_CHECKER }}"
+      toggle_quiz_check: "${{ env.CHECK_QUIZZES }}"
+      toggle_md_linter: "${{ env.MARKDOWN_LINTER }}"
+      toggle_readability: "${{ env.READABILITY_REPORT }}"
+      toggle_render_preview: "${{ env.RENDER_PREVIEW }}"
+      toggle_dictionary_sort: "${{ env.DICTIONARY_SORT }}"
+      rendering_docker_image: "${{ env.RENDERING_DOCKER_IMAGE }}"
+
+########################## Make the error reports ##############################
+  ottr-reports:
+    needs: yaml-check
+    if: ${{needs.yaml-check.outputs.toggle_spell_check == 'yes' || needs.yaml-check.outputs.toggle_url_check == 'yes' || needs.yaml-check.outputs.toggle_quiz_check == 'yes'}}
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+
+    steps:
+    - name: Checkout Actions Repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Run Reports
+      id: run-reports
+      uses: ottrproject/ottr-reports@main
+      with:
+        check_spelling: ${{needs.yaml-check.outputs.spell_check}}
+        spelling_error_min: 1
+        check_urls: ${{needs.yaml-check.outputs.url_check}}
+        url_error_min: 1
+        check_quiz_form: ${{needs.yaml-check.outputs.spell_check}}
+        quiz_error_min: 1
+        sort_dictionary: ${{needs.yaml-check.outputs.dictionary_sort}}
+
+############################# Style the code ###################################
+  style-code:
+    name: Style code
+    needs: yaml-check
+    runs-on: ubuntu-latest
+    if: ${{needs.yaml-check.outputs.toggle_style_code == 'yes'}}
+    container:
+      image: jhudsl/base_ottr:main
+
+    steps:
+      - name: Checkout files
+        uses: actions/checkout@v4
         with:
-          directory: ${{ matrix.config.dir }}
-          tag: ${{ matrix.config.name }}
-          dockerhubpush: false
-          token: ${{ secrets.GH_PAT }}
-          dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
-          dockerhub_token: ${{ secrets.DOCKERHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Run styler
+        run: Rscript -e "styler::style_file(list.files(pattern = '(R|q)md$', recursive = FALSE, full.names = TRUE));warnings()"
+
+      - name: Commit styled files
+        run: |
+          git config --system --add safe.directory "$GITHUB_WORKSPACE"
+          git add \*md
+          git commit -m 'Style *mds' || echo "No changes to commit"
+          git push origin || echo "No changes to commit"
+
+############################# Readability Report ###################################
+
+  readability-report:
+    name: Readability report
+    needs: yaml-check
+    runs-on: ubuntu-latest
+    if: ${{needs.yaml-check.outputs.toggle_readability == 'yes'}}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Readability report
+        uses: Rebilly/lexi@v2
+        with:
+          github-token: ${{ secrets.GH_PAT }}
+          glob: '**/*.md'
+
+############################# Render Preview ###################################
+  render-preview:
+    name: Render preview
+    needs: yaml-check
+    runs-on: ubuntu-latest
+    container:
+      image: ${{needs.yaml-check.outputs.rendering_docker_image}}
+    if: ${{needs.yaml-check.outputs.toggle_render_preview == 'yes'}}
+
+    - name: Run render
+      uses: ottrproject/ottr-preview@main
+      with:
+        toggle_website: ${{needs.yaml-check.outputs.toggle_website}}
