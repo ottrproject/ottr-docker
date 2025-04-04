@@ -1,5 +1,13 @@
 #!/bin/sh
 
+# This script should always run as if it were being called from
+# the directory it lives in.
+script_directory="$(perl -e 'use File::Basename;
+  use Cwd "abs_path";
+  print dirname(abs_path(@ARGV[0]));' -- "$0")"
+cd "$script_directory" || exit
+
+## Do the thing depending on the command
 if [ "$1" = "rmd" ]; then
   Rscript -e "bookdown::render_book('index.Rmd', output_format = 'all')"
 elif [ "$1" = "quarto" ] || [ "$1" = "quarto_web" ]; then
