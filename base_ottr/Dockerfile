@@ -84,7 +84,7 @@ RUN gdebi --non-interactive quarto-linux-amd64.deb
 RUN Rscript -e  "devtools::install_version('gitcreds', version = '0.1.1', repos = 'http://cran.us.r-project.org')"
 
 RUN installGithub.r \
-  ottrproject/ottrpal \
+  ottrproject/ottrpal
 
 # Set final workdir for commands
 WORKDIR /home/rstudio
