@@ -17,7 +17,7 @@ jobs:
         config:
           - {dir: base_ottr,   name: 'jhudsl/base_ottr'}
           - {dir: bioconductor,   name: 'jhudsl/ottr_bioconductor'}
-          - {dir: ottrpal,   name: 'ottrproject/ottrpal'}
+          - {dir: ottrpal,   name: 'jhudsl/ottrpal'}
           - {dir: ottr_anvil_poll, name: 'jhudsl/anvil-poll-2024'}
           - {dir: ottr_datatables, name: 'jhudsl/ottr_datatables'}
           - {dir: ottr_website,   name: 'jhudsl/ottr_website'}
