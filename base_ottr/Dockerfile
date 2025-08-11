@@ -85,9 +85,16 @@ RUN Rscript -e  "devtools::install_version('gitcreds', version = '0.1.1', repos 
 #rgoogleslides archived version from CRAN
 RUN Rscript -e  "options(warn = 2);install.packages( \
     'https://cran.r-project.org/src/contrib/Archive/rgoogleslides/rgoogleslides_0.3.2.tar.gz')"
-    
-RUN installGithub.r \
-  ottrproject/ottrpal
+
+# Install the 'remotes' package from CRAN
+RUN R -e "install.packages('remotes', repos = 'https://cran.rstudio.com/')"
+
+# Install the R package from a specific GitHub branch
+# Replace 'your_username', 'your_repo', and 'your_branch' with the actual values
+RUN R -e "remotes::install_github('ottrproject/ottrpal', ref = 'tokenHandling')"
+
+#RUN installGithub.r \
+#  ottrproject/ottrpal
 
 # Set final workdir for commands
 WORKDIR /home/rstudio
