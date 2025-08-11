@@ -87,7 +87,8 @@ RUN Rscript -e  "options(warn = 2);install.packages( \
     'https://cran.r-project.org/src/contrib/Archive/rgoogleslides/rgoogleslides_0.3.2.tar.gz')"
     
 RUN installGithub.r \
-  ottrproject/ottrpal
+  ottrproject/ottrpal \
+  jhudsl/cow
 
 # Set final workdir for commands
 WORKDIR /home/rstudio
