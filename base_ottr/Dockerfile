@@ -79,19 +79,18 @@ RUN Rscript -e  "options(warn = 2);install.packages( \
 RUN curl -LO https://quarto.org/download/latest/quarto-linux-amd64.deb
 RUN gdebi --non-interactive quarto-linux-amd64.deb
 
+# Install the 'remotes' package from CRAN
+RUN R -e "install.packages('remotes', repos = 'https://cran.rstudio.com/')"
+
 # cow needs this dependency:
-RUN Rscript -e  "devtools::install_version('gitcreds', version = '0.1.1', repos = 'http://cran.us.r-project.org')"
+remotes::install_version('gitcreds', version = '0.1.1', repos = 'http://cran.us.r-project.org', type = 'source')
 
 #rgoogleslides archived version from CRAN
 RUN Rscript -e  "options(warn = 2);install.packages( \
     'https://cran.r-project.org/src/contrib/Archive/rgoogleslides/rgoogleslides_0.3.2.tar.gz')"
 
 RUN installGithub.r \
-  #ottrproject/ottrpal \
   jhudsl/cow
-
-# Install the 'remotes' package from CRAN
-RUN R -e "install.packages('remotes', repos = 'https://cran.rstudio.com/')"
 
 # Install the R package from a specific GitHub branch
 # Replace 'your_username', 'your_repo', and 'your_branch' with the actual values
