@@ -83,7 +83,7 @@ RUN gdebi --non-interactive quarto-linux-amd64.deb
 RUN R -e "install.packages('remotes', repos = 'https://cran.rstudio.com/')"
 
 # cow needs this dependency:
-remotes::install_version('gitcreds', version = '0.1.1', repos = 'http://cran.us.r-project.org', type = 'source')
+RUN R -e "remotes::install_version('gitcreds', version = '0.1.1', repos = 'http://cran.us.r-project.org')"
 
 #rgoogleslides archived version from CRAN
 RUN Rscript -e  "options(warn = 2);install.packages( \
