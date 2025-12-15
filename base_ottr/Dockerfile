@@ -91,7 +91,7 @@ RUN R -e "install.packages('remotes', repos = 'https://cran.rstudio.com/')"
 
 # Install the R package from a specific GitHub branch
 # Replace 'your_username', 'your_repo', and 'your_branch' with the actual values
-RUN R -e "remotes::install_github('ottrproject/ottrpal', ref = 'tokenHandling')"
+RUN R -e "remotes::install_github('ottrproject/ottrpal', ref = 'acoffman/borrow-chapter-token-fix')"
 
 #RUN installGithub.r \
 #  ottrproject/ottrpal
