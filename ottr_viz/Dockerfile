@@ -1,4 +1,5 @@
 FROM jhudsl/ottr_python:main
+LABEL maintainer="kisaac@fredhutch.org"
 
 # Remove broken Vivaldi repo
 RUN rm -f /etc/apt/sources.list.d/vivaldi.list \
