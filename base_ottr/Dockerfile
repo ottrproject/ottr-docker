@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM rocker/tidyverse:4.3.2
+FROM rocker/tidyverse:4.4.0
 LABEL maintainer="cansav09@gmail.com"
 
 WORKDIR /rocker-build/
