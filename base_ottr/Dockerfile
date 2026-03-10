@@ -69,10 +69,6 @@ RUN gdebi --non-interactive quarto-linux-amd64.deb
 # cow needs this dependency:
 RUN Rscript -e "devtools::install_version('gitcreds', version = '0.1.1', repos = 'http://cran.us.r-project.org')"
 
-# rgoogleslides archived version from CRAN
-RUN install2.r --error \
-    'https://cran.r-project.org/src/contrib/Archive/rgoogleslides/rgoogleslides_0.3.2.tar.gz'
-
 RUN installGithub.r \
   ottrproject/ottrpal \
   jhudsl/cow
