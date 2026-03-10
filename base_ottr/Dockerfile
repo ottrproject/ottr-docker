@@ -1,4 +1,3 @@
-# syntax=docker/dockerfile:1
 FROM rocker/tidyverse:4.4.0
 LABEL maintainer="cansav09@gmail.com"
 
@@ -35,46 +34,45 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN Rscript -e "remove.packages('rlang')"
 
-# Commonly used R packages
-RUN Rscript -e  "options(warn = 2);install.packages( \
-    c('rlang', \
-      'bookdown', \
-      'emojifont', \
-      'here', \
-      'leanpubr', \
-      'optparse', \
-      'oro.nifti', \
-      'qpdf', \
-      'R.utils', \
-      'rprojroot', \
-      'googlesheets4', \
-      'servr', \
-      'spelling', \
-      'styler', \
-      'reticulate', \
-      'gh', \
-      'tibble', \
-      'config', \
-      'quarto', \
-      'chromote', \
-      'rvest', \
-      'DT', \
-      'knitr', \
-      'xfun', \
-      'testthat', \
-      'webshot2'), \
-      repos = 'https://cloud.r-project.org/')"
+# Commonly used R packages (littler's install2.r is included in rocker/tidyverse)
+RUN install2.r --error --deps TRUE \
+    rlang \
+    bookdown \
+    emojifont \
+    here \
+    leanpubr \
+    optparse \
+    oro.nifti \
+    qpdf \
+    R.utils \
+    rprojroot \
+    googlesheets4 \
+    servr \
+    spelling \
+    styler \
+    reticulate \
+    gh \
+    tibble \
+    config \
+    quarto \
+    chromote \
+    rvest \
+    DT \
+    knitr \
+    xfun \
+    testthat \
+    webshot2
 
 RUN curl -LO https://quarto.org/download/latest/quarto-linux-amd64.deb
 RUN gdebi --non-interactive quarto-linux-amd64.deb
 
 # cow needs this dependency:
-RUN Rscript -e  "devtools::install_version('gitcreds', version = '0.1.1', repos = 'http://cran.us.r-project.org')"
+RUN Rscript -e "devtools::install_version('gitcreds', version = '0.1.1', repos = 'http://cran.us.r-project.org')"
 
-#rgoogleslides archived version from CRAN
-RUN Rscript -e  "options(warn = 2);install.packages( \
-    'https://cran.r-project.org/src/contrib/Archive/rgoogleslides/rgoogleslides_0.3.2.tar.gz')"
-    
+# rgoogleslides archived version from CRAN
+RUN install2.r --error \
+    'https://cran.r-project.org/src/contrib/Archive/rgoogleslides/rgoogleslides_0.3.2.tar.gz'
+
 RUN installGithub.r \
   ottrproject/ottrpal \
   jhudsl/cow
