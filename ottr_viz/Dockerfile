@@ -48,4 +48,4 @@ RUN Rscript -e "install.packages('remotes', repos='https://cloud.r-project.org')
 RUN Rscript -e "remotes::install_github('davidsjoberg/ggsankey')"
 
 # Python packages
-RUN pip3 install adjustText==1.3.0
+RUN pip3 install adjustText==1.3.0 highlight-text
