@@ -47,34 +47,35 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN Rscript -e "remove.packages('rlang')"
 
 # Commonly used R packages
-RUN Rscript -e  "options(warn = 2);install.packages( \
-    c('rlang', \
-      'bookdown', \
-      'emojifont', \
-      'here', \
-      'leanpubr', \
-      'optparse', \
-      'oro.nifti', \
-      'qpdf', \
-      'R.utils', \
-      'rprojroot', \
-      'googlesheets4', \
-      'servr', \
-      'spelling', \
-      'styler', \
-      'reticulate', \
-      'gh', \
-      'tibble', \
-      'config', \
-      'quarto', \
-      'chromote', \
-      'rvest', \
-      'DT', \
-      'knitr', \
-      'xfun', \
-      'testthat', \
-      'webshot2'), \
-      repos = 'https://cloud.r-project.org/')"
+# Use install2.r instead for better package availability handling
+RUN install2.r --error --deps TRUE \
+    rlang \
+    bookdown \
+    emojifont \
+    here \
+    leanpubr \
+    optparse \
+    oro.nifti \
+    qpdf \
+    R.utils \
+    rprojroot \
+    googlesheets4 \
+    servr \
+    spelling \
+    styler \
+    reticulate \
+    gh \
+    tibble \
+    config \
+    quarto \
+    chromote \
+    rvest \
+    DT \
+    knitr \
+    xfun \
+    testthat \
+    webshot2
+
 
 RUN curl -LO https://quarto.org/download/latest/quarto-linux-amd64.deb
 RUN gdebi --non-interactive quarto-linux-amd64.deb
