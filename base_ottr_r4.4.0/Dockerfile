@@ -1,5 +1,4 @@
-# syntax=docker/dockerfile:1
-FROM rocker/tidyverse:4.3.2
+FROM rocker/tidyverse:4.4.0
 LABEL maintainer="cansav09@gmail.com"
 
 WORKDIR /rocker-build/
@@ -19,17 +18,6 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | g
 RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null;
 RUN apt update && apt install -y gh;
 
-# Uninstall old version of pandoc
-RUN sudo apt-get purge pandoc pandoc-citeproc pandoc-data \
-  && sudo apt-get autoremove --purge
-
-# Install pandoc
-RUN wget https://github.com/jgm/pandoc/releases/download/2.14.1/pandoc-2.14.1-1-amd64.deb \
-  && sudo apt-get install ./pandoc-2.14.1-1-amd64.deb
-
-# Create new symlinks
-RUN ln -s /usr/bin/pandoc /usr/lib/rstudio-server/bin/pandoc
-
 # Add curl, bzip2
 RUN apt-get update -qq && apt-get -y --no-install-recommends install \
     bzip2 \
@@ -46,8 +34,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN Rscript -e "remove.packages('rlang')"
 
-# Commonly used R packages
-# Use install2.r instead for better package availability handling
+# Commonly used R packages (littler's install2.r is included in rocker/tidyverse)
 RUN install2.r --error --deps TRUE \
     rlang \
     bookdown \
@@ -76,17 +63,12 @@ RUN install2.r --error --deps TRUE \
     testthat \
     webshot2
 
-
 RUN curl -LO https://quarto.org/download/latest/quarto-linux-amd64.deb
 RUN gdebi --non-interactive quarto-linux-amd64.deb
 
 # cow needs this dependency:
-RUN Rscript -e  "devtools::install_version('gitcreds', version = '0.1.1', repos = 'http://cran.us.r-project.org')"
+RUN Rscript -e "devtools::install_version('gitcreds', version = '0.1.1', repos = 'http://cran.us.r-project.org')"
 
-#rgoogleslides archived version from CRAN
-RUN Rscript -e  "options(warn = 2);install.packages( \
-    'https://cran.r-project.org/src/contrib/Archive/rgoogleslides/rgoogleslides_0.3.2.tar.gz')"
-    
 RUN installGithub.r \
   ottrproject/ottrpal \
   jhudsl/cow
