@@ -16,6 +16,7 @@ jobs:
       matrix:
         config:
           - {dir: base_ottr,   name: 'jhudsl/base_ottr'}
+          - {dir: base_ottr_r4.4.0,   name: 'jhudsl/base_ottr_r4.4.0'}
           - {dir: bioconductor,   name: 'jhudsl/ottr_bioconductor'}
           - {dir: ottrpal,   name: 'jhudsl/ottrpal'}
           - {dir: ottr_anvil_poll, name: 'jhudsl/anvil-poll-2024'}
