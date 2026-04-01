@@ -1,6 +1,9 @@
 # Candace Savonen Apr 2025
+
 name: 'Build Docker Image'
+author: "Candace Savonen"
 description: 'Build and push from a dockerfile in the repository'
+
 inputs:
   directory:
     description: "What's the file path to this Dockerfile's folder in this repo"
