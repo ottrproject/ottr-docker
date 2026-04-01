@@ -1,14 +1,22 @@
-<!-- From https://axolo.co/blog/p/part-3-github-pull-request-template--> 
+<!-- From https://axolo.co/blog/p/part-3-github-pull-request-template-->
 
 # Description
 
-<!-- Please include a summary of the changes and the related issue. Please also include relevant motivation and context. List any dependencies that are required for this change. --> 
+<!-- Please include a summary of the changes and the related issue. Please also include relevant motivation and context. List any dependencies that are required for this change. -->
 
 Fixes # (issue)
 
+## Checklist (if adding a new docker image)
+
+- [ ] image in new directory
+- [ ] file in that directory named 'Dockerfile' exactly
+- [ ] image has been built or tested / passes tests
+- [ ] image added to `pull_request.yml` file (following `- {dir: directory_path,   name: 'name its called on dockerhub'}` convention)
+- [ ] image added to `merge.yml` file (following `- {dir: directory_path,   name: 'name its called on dockerhub'}` convention)
+
 ## Type of change
 
-<!-- Please delete options that are not relevant. --> 
+<!-- Please delete options that are not relevant. -->
 
 - [ ] Bug fix (non-breaking change which fixes an issue)
 - [ ] New feature (non-breaking change which adds functionality)
@@ -17,7 +25,7 @@ Fixes # (issue)
 
 # How Has This Been Tested?
 
-<!-- Please describe the tests that you ran to verify your changes. Provide instructions so we can reproduce. Please also list any relevant details for your test configuration --> 
+<!-- Please describe the tests that you ran to verify your changes. Provide instructions so we can reproduce. Please also list any relevant details for your test configuration -->
 
 - [ ] Test A
 - [ ] Test B
