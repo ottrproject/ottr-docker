@@ -46,3 +46,18 @@ Where `base_ottr` is the path to the directory where the Dockerfile is stored in
 8. Upon merging `merge.yml` will rebuild the image one more time and then push to Dockerhub (if it has proper credentials to do so). Dockerhub username and Dockerhub token stored in this repository as GitHub secrets needs to have push access to the image on Dockerhub.  
 
 For more information on any of this ask @cansavvy.
+
+## To make a new tagged version of an image 
+
+1. Make a new directory with a similar name. For example, base_ottr_r4.4.0 as a tag of r4.4.0 for base_ottr. 
+2. Put your Dockerfile in this directory. Make sure it is named "Dockerfile" exactly.  
+3. After checking that the image runs without pushing to Dockerhub, push to Dockerhub
+Go to Actions > Manual build of docker image > Run workflow
+
+For directory, put the directory/docker image name that you'd like to rebuild. e.g. "base_ottr_r4.4.0".
+
+For tag, put the full name of the docker image as it is called on dockerhub. e.g. "jhudsl/base_ottr:main-r4.4.0".
+
+For "Push to Dockerhub"  put "true".
+4. Add your new tagged version to .github/workflows/pull_request.yml like this: 
+- {dir: base_ottr,   name: 'jhudsl/base_ottr:main-r4.4.0'}
