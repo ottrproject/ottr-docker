@@ -1,4 +1,4 @@
-FROM jhudsl/base_ottr:dev
+FROM jhudsl/base_ottr:main
 LABEL maintainer="cansav09@gmail.com"
 
 WORKDIR /app
